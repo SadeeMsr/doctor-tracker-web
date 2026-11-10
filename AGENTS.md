@@ -425,6 +425,7 @@ and must behave correctly when one happens.
 ## Boundaries: ask before you
 
 - add, remove or upgrade a dependency (especially UI kits, state libraries or CSS-in-JS)
+- add tests or test tooling: they're deferred until the app is feature-complete
 - change the design tokens, folder structure, lint/TS config or `next.config.ts`
 - change how auth, the API client or the `/api` rewrite work
 - do anything not asked for (no drive-by refactors, no speculative abstractions, no new
