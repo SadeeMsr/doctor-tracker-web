@@ -1,15 +1,26 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
 
-export default function DashboardError({ error, reset }: { error: Error; reset: () => void }) {
+import { ErrorState } from '@/components/feedback/error-state';
+import { getErrorMessage, getErrorReference } from '@/lib/errors';
+
+interface DashboardErrorProps {
+  error: unknown;
+  retry: () => void;
+}
+
+/** Catches render errors in dashboard pages; the sidebar shell stays usable. */
+export default function DashboardError({ error, retry }: DashboardErrorProps) {
+  useEffect(() => {
+    console.error(error);
+  }, [error]);
+
   return (
-    <div role="alert" className="mx-auto max-w-md space-y-4 py-16 text-center">
-      <h2 className="text-lg font-semibold">Something went wrong</h2>
-      <p className="text-sm text-muted-foreground">{error.message}</p>
-      <Button variant="secondary" onClick={reset}>
-        Try again
-      </Button>
-    </div>
+    <ErrorState
+      description={getErrorMessage(error)}
+      reference={getErrorReference(error)}
+      onRetry={retry}
+    />
   );
 }

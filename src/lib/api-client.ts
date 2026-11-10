@@ -4,10 +4,14 @@ export interface ApiErrorBody {
   error: { code: string; message: string; details?: unknown; requestId?: string };
 }
 
+/** Every failed request surfaces as this, whether the server answered or not. */
 export class ApiError extends Error {
+  /** HTTP status, or `0` when no response arrived (offline, DNS, connection refused). */
   readonly status: number;
+  /** Stable error code from the API (see the API's AGENTS.md); branch on this, not `message`. */
   readonly code: string;
   readonly details?: unknown;
+  readonly requestId?: string;
 
   constructor(status: number, body: ApiErrorBody['error']) {
     super(body.message);
@@ -15,7 +19,12 @@ export class ApiError extends Error {
     this.status = status;
     this.code = body.code;
     this.details = body.details;
+    this.requestId = body.requestId;
   }
+}
+
+export function isApiError(error: unknown): error is ApiError {
+  return error instanceof ApiError;
 }
 
 type QueryValue = string | number | boolean | null | undefined;
@@ -23,6 +32,8 @@ type QueryValue = string | number | boolean | null | undefined;
 interface RequestOptions extends Omit<RequestInit, 'body'> {
   query?: Record<string, QueryValue>;
   body?: unknown;
+  /** Sent as `Idempotency-Key`. Generate once per form session and reuse it on retries. */
+  idempotencyKey?: string;
   /** Internal: prevents infinite refresh loops. */
   skipRefresh?: boolean;
 }
@@ -36,6 +47,24 @@ function buildUrl(path: string, query?: Record<string, QueryValue>): string {
   return `${API_BASE_PATH}${path}${qs ? `?${qs}` : ''}`;
 }
 
+function isAbortError(error: unknown): boolean {
+  return error instanceof DOMException && error.name === 'AbortError';
+}
+
+/** `fetch` that turns "no response at all" into an `ApiError` with status 0. */
+async function send(url: string, init: RequestInit): Promise<Response> {
+  try {
+    return await fetch(url, init);
+  } catch (error) {
+    // Cancellation (e.g. TanStack Query aborting a stale request) is not a failure.
+    if (isAbortError(error)) throw error;
+    throw new ApiError(0, {
+      code: 'NETWORK_ERROR',
+      message: 'Network request failed',
+    });
+  }
+}
+
 /**
  * Single-flight refresh: if ten requests 401 at once, only one refresh call is made
  * and the rest wait for it.
@@ -43,7 +72,7 @@ function buildUrl(path: string, query?: Record<string, QueryValue>): string {
 let refreshPromise: Promise<boolean> | null = null;
 
 function refreshSession(): Promise<boolean> {
-  refreshPromise ??= fetch(`${API_BASE_PATH}/auth/refresh`, {
+  refreshPromise ??= send(`${API_BASE_PATH}/auth/refresh`, {
     method: 'POST',
     credentials: 'include',
   })
@@ -60,22 +89,24 @@ async function parseError(res: Response): Promise<ApiError> {
     const body = (await res.json()) as ApiErrorBody;
     return new ApiError(res.status, body.error);
   } catch {
+    // Not our JSON envelope (e.g. a proxy's HTML error page during a cold start).
     return new ApiError(res.status, {
-      code: 'NETWORK_ERROR',
-      message: res.statusText || 'Request failed',
+      code: 'UNEXPECTED_RESPONSE',
+      message: res.statusText || 'Unexpected response from the server',
     });
   }
 }
 
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { query, body, skipRefresh, headers, ...init } = options;
+  const { query, body, skipRefresh, idempotencyKey, headers, ...init } = options;
 
-  const res = await fetch(buildUrl(path, query), {
+  const res = await send(buildUrl(path, query), {
     ...init,
     credentials: 'include',
     headers: {
       Accept: 'application/json',
       ...(body !== undefined && { 'Content-Type': 'application/json' }),
+      ...(idempotencyKey && { 'Idempotency-Key': idempotencyKey }),
       ...headers,
     },
     ...(body !== undefined && { body: JSON.stringify(body) }),
