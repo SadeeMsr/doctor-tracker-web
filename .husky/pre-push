@@ -1,0 +1,2 @@
+# A production build catches prerender/Suspense errors that typecheck and lint cannot.
+pnpm build
