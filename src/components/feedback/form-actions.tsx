@@ -2,9 +2,7 @@ import { CircleAlert, CircleCheck } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import { DialogFooter } from '@/components/ui/dialog';
-import { KeyCombo } from '@/components/ui/kbd';
 import { Spinner } from '@/components/ui/spinner';
-import { SHORTCUTS } from '@/lib/shortcuts';
 
 interface FormActionsProps {
   /** Form-level error (not tied to a field); shown above the buttons. */
@@ -54,17 +52,6 @@ export function FormActions({
         </p>
       )}
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-end">
-        {/* Keyboard hint for desktop users; phones have no keys to press. */}
-        <p className="mr-auto hidden items-center gap-3 text-xs text-muted-foreground lg:flex">
-          <span className="inline-flex items-center gap-1.5">
-            <KeyCombo combo={SHORTCUTS.save} /> save
-          </span>
-          {secondaryLabel && (
-            <span className="inline-flex items-center gap-1.5">
-              <KeyCombo combo={SHORTCUTS.saveAndAddAnother} /> and add another
-            </span>
-          )}
-        </p>
         <Button variant="ghost" onClick={onCancel} disabled={isPending}>
           {note ? 'Done' : 'Cancel'}
         </Button>
