@@ -10,12 +10,20 @@ import { DoctorIdentity } from './doctor-identity';
 import { DoctorPatientsLink } from './doctor-patients-link';
 
 /** A doctor as a stacked card: the phone layout of a table row. */
-export function DoctorCard({ doctor, actions }: { doctor: Doctor; actions: ReactNode }) {
+interface DoctorCardProps {
+  doctor: Doctor;
+  actions: ReactNode;
+  onAddPatient: (doctor: Doctor) => void;
+}
+
+export function DoctorCard({ doctor, actions, onAddPatient }: DoctorCardProps) {
   return (
     <Card className="space-y-4 p-4">
       <div className="flex items-start justify-between gap-2">
-        <DoctorIdentity doctor={doctor} secondary={doctor.email} />
-        {actions}
+        <div className="min-w-0 flex-1">
+          <DoctorIdentity doctor={doctor} secondary={doctor.email} />
+        </div>
+        <div className="shrink-0">{actions}</div>
       </div>
       <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
         <Badge tone="accent">{doctor.specialization}</Badge>
@@ -24,7 +32,11 @@ export function DoctorCard({ doctor, actions }: { doctor: Doctor; actions: React
           {doctor.hospital}
         </span>
       </div>
-      <DoctorPatientsLink doctor={doctor} className="w-full justify-between" />
+      <DoctorPatientsLink
+        doctor={doctor}
+        onAddPatient={onAddPatient}
+        className="w-full justify-between"
+      />
     </Card>
   );
 }

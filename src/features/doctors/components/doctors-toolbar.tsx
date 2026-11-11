@@ -1,11 +1,11 @@
 'use client';
 
-import { ArrowDownUp, Building2, Stethoscope, X } from 'lucide-react';
+import { ArrowDownUp, Building2, Stethoscope } from 'lucide-react';
 
+import { ClearFiltersButton } from '@/components/filters/clear-filters-button';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { FacetFilter } from '@/components/filters/facet-filter';
 import { SearchInput } from '@/components/filters/search-input';
-import { Button } from '@/components/ui/button';
 
 import { DOCTOR_SORT_OPTIONS, SPECIALIZATION_OPTIONS } from '../constants';
 import type { DoctorFilterState } from '../hooks/use-doctor-filters';
@@ -13,7 +13,7 @@ import { useHospitals } from '../queries';
 
 /** Search, filters and sort for the doctor list; all of it lives in the URL. */
 export function DoctorsToolbar({ state }: { state: DoctorFilterState }) {
-  const { filters, update, setSearch, reset, hasFilters } = state;
+  const { filters, update, setSearch, reset, activeCount } = state;
   const hospitals = useHospitals();
   const hospitalOptions = (hospitals.data ?? []).map((name) => ({ value: name, label: name }));
 
@@ -29,18 +29,18 @@ export function DoctorsToolbar({ state }: { state: DoctorFilterState }) {
         <FacetFilter
           label="Specialization"
           icon={<Stethoscope aria-hidden />}
-          allLabel="All specializations"
+          isMultiple
           options={SPECIALIZATION_OPTIONS}
-          selected={filters.specialization ? [filters.specialization] : []}
-          onChange={([specialization]) => update({ specialization: specialization ?? null })}
+          selected={filters.specialization}
+          onChange={(specialization) => update({ specialization })}
         />
         <FacetFilter
           label="Hospital"
           icon={<Building2 aria-hidden />}
-          allLabel="All hospitals"
+          isMultiple
           options={hospitalOptions}
-          selected={filters.hospital ? [filters.hospital] : []}
-          onChange={([hospital]) => update({ hospital: hospital ?? '' })}
+          selected={filters.hospital}
+          onChange={(hospital) => update({ hospital })}
         />
         <DateRangeFilter
           label="Date added"
@@ -55,12 +55,7 @@ export function DoctorsToolbar({ state }: { state: DoctorFilterState }) {
           selected={[filters.sort]}
           onChange={([sort]) => update({ sort: sort ?? 'newest' })}
         />
-        {hasFilters && (
-          <Button variant="ghost" size="sm" onClick={reset}>
-            <X aria-hidden />
-            Clear
-          </Button>
-        )}
+        <ClearFiltersButton count={activeCount} onClear={reset} />
       </div>
     </div>
   );

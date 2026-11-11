@@ -34,6 +34,13 @@ export function usePatientFilters() {
   const [filters, setFilters] = useQueryStates(parsers);
   const search = useDebouncedValue(filters.q.trim(), SEARCH_DEBOUNCE_MS);
 
+  // Search, each ticked option, gender and the date range each count as one active filter.
+  const activeCount =
+    (filters.q ? 1 : 0) +
+    filters.condition.length +
+    (filters.gender ? 1 : 0) +
+    (filters.from || filters.to ? 1 : 0);
+
   const params: PatientListParams = {
     page: Math.max(1, filters.page),
     limit: PAGE_SIZE,
@@ -48,9 +55,8 @@ export function usePatientFilters() {
   return {
     filters,
     params,
-    hasFilters: Boolean(
-      filters.q || filters.condition.length || filters.gender || filters.from || filters.to,
-    ),
+    activeCount,
+    hasFilters: activeCount > 0,
     /** Any filter change returns to the first page. */
     update: (patch: Partial<Omit<Filters, 'page' | 'q'>>) => void setFilters({ ...patch, page: 1 }),
     setSearch: (q: string) =>

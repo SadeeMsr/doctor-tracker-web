@@ -7,8 +7,10 @@ import {
   Menu,
   MenuCheckboxItem,
   MenuContent,
+  MenuItem,
   MenuRadioGroup,
   MenuRadioItem,
+  MenuSeparator,
   MenuTrigger,
 } from '@/components/ui/menu';
 
@@ -51,7 +53,7 @@ function Choices<TValue extends string>({
   allLabel,
 }: FacetFilterProps<TValue>) {
   if (isMultiple) {
-    return options.map((option) => (
+    const checkboxes = options.map((option) => (
       <MenuCheckboxItem
         key={option.value}
         checked={selected.includes(option.value)}
@@ -66,6 +68,14 @@ function Choices<TValue extends string>({
         {option.label}
       </MenuCheckboxItem>
     ));
+    if (selected.length === 0) return checkboxes;
+    return (
+      <>
+        {checkboxes}
+        <MenuSeparator />
+        <MenuItem onClick={() => onChange([])}>Clear selection</MenuItem>
+      </>
+    );
   }
   return (
     <MenuRadioGroup

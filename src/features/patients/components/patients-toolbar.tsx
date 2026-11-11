@@ -1,18 +1,18 @@
 'use client';
 
-import { Activity, ArrowDownUp, UserRound, X } from 'lucide-react';
+import { Activity, ArrowDownUp, UserRound } from 'lucide-react';
 
+import { ClearFiltersButton } from '@/components/filters/clear-filters-button';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { FacetFilter } from '@/components/filters/facet-filter';
 import { SearchInput } from '@/components/filters/search-input';
-import { Button } from '@/components/ui/button';
 
 import { CONDITION_OPTIONS, GENDER_OPTIONS, PATIENT_SORT_OPTIONS } from '../constants';
 import type { PatientFilterState } from '../hooks/use-patient-filters';
 
 /** Search, filters and sort for a patient list; all of it lives in the URL. */
 export function PatientsToolbar({ state }: { state: PatientFilterState }) {
-  const { filters, update, setSearch, reset, hasFilters } = state;
+  const { filters, update, setSearch, reset, activeCount } = state;
 
   return (
     <div className="flex flex-col gap-3 xl:flex-row xl:items-center">
@@ -52,12 +52,7 @@ export function PatientsToolbar({ state }: { state: PatientFilterState }) {
           selected={[filters.sort]}
           onChange={([sort]) => update({ sort: sort ?? 'recent' })}
         />
-        {hasFilters && (
-          <Button variant="ghost" size="sm" onClick={reset}>
-            <X aria-hidden />
-            Clear
-          </Button>
-        )}
+        <ClearFiltersButton count={activeCount} onClear={reset} />
       </div>
     </div>
   );

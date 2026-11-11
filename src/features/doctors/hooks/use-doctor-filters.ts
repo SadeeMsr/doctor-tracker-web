@@ -2,6 +2,7 @@
 
 import {
   debounce,
+  parseAsArrayOf,
   parseAsInteger,
   parseAsString,
   parseAsStringLiteral,
@@ -17,8 +18,9 @@ import type { DoctorListParams } from '../types';
 
 const parsers = {
   q: parseAsString.withDefault(''),
-  specialization: parseAsStringLiteral(SPECIALIZATIONS),
-  hospital: parseAsString.withDefault(''),
+  specialization: parseAsArrayOf(parseAsStringLiteral(SPECIALIZATIONS)).withDefault([]),
+  // `|` separates hospitals in the URL: names may contain commas.
+  hospital: parseAsArrayOf(parseAsString, '|').withDefault([]),
   from: parseAsString.withDefault(''),
   to: parseAsString.withDefault(''),
   sort: parseAsStringLiteral(DOCTOR_SORTS).withDefault('newest'),
@@ -32,12 +34,19 @@ export function useDoctorFilters() {
   const [filters, setFilters] = useQueryStates(parsers);
   const search = useDebouncedValue(filters.q.trim(), SEARCH_DEBOUNCE_MS);
 
+  // Search, each ticked option and the date range each count as one active filter.
+  const activeCount =
+    (filters.q ? 1 : 0) +
+    filters.specialization.length +
+    filters.hospital.length +
+    (filters.from || filters.to ? 1 : 0);
+
   const params: DoctorListParams = {
     page: Math.max(1, filters.page),
     limit: PAGE_SIZE,
     search: search || undefined,
-    specialization: filters.specialization ?? undefined,
-    hospital: filters.hospital || undefined,
+    specialization: filters.specialization.length ? filters.specialization : undefined,
+    hospital: filters.hospital.length ? filters.hospital : undefined,
     from: isDateInput(filters.from) ? filters.from : undefined,
     to: isDateInput(filters.to) ? filters.to : undefined,
     ...DOCTOR_SORT_PARAMS[filters.sort],
@@ -46,9 +55,8 @@ export function useDoctorFilters() {
   return {
     filters,
     params,
-    hasFilters: Boolean(
-      filters.q || filters.specialization || filters.hospital || filters.from || filters.to,
-    ),
+    activeCount,
+    hasFilters: activeCount > 0,
     /** Any filter change returns to the first page. */
     update: (patch: Partial<Omit<Filters, 'page' | 'q'>>) => void setFilters({ ...patch, page: 1 }),
     setSearch: (q: string) =>

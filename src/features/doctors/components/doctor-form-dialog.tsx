@@ -4,7 +4,9 @@ import { Stethoscope } from 'lucide-react';
 
 import { Avatar } from '@/components/ui/avatar';
 import { Dialog, DialogIcon } from '@/components/ui/dialog';
+import { useAddAnother } from '@/hooks/use-add-another';
 
+import type { DoctorCarry } from '../hooks/use-doctor-form';
 import type { Doctor } from '../types';
 
 import { DoctorForm } from './doctor-form';
@@ -17,10 +19,16 @@ interface DoctorFormDialogProps {
 }
 
 export function DoctorFormDialog({ open, onOpenChange, doctor }: DoctorFormDialogProps) {
+  const session = useAddAnother<DoctorCarry>();
+  const handleOpenChange = (next: boolean) => {
+    if (!next) session.end();
+    onOpenChange(next);
+  };
+
   return (
     <Dialog
       open={open}
-      onOpenChange={onOpenChange}
+      onOpenChange={handleOpenChange}
       title={doctor ? 'Edit doctor' : 'Add a doctor'}
       media={
         doctor ? (
@@ -35,7 +43,15 @@ export function DoctorFormDialog({ open, onOpenChange, doctor }: DoctorFormDialo
         doctor ? `Update ${doctor.name}'s details.` : 'They can be assigned patients right away.'
       }
     >
-      <DoctorForm key={doctor?.id} doctor={doctor} onDone={() => onOpenChange(false)} />
+      {/* A new key per saved doctor remounts the form: clean values, errors and focus. */}
+      <DoctorForm
+        key={`${doctor?.id ?? 'new'}-${String(session.addedCount)}`}
+        doctor={doctor}
+        carry={session.carry}
+        addedCount={session.addedCount}
+        onDone={() => handleOpenChange(false)}
+        onSavedAndNext={session.startNext}
+      />
     </Dialog>
   );
 }
