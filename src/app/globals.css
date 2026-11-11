@@ -64,28 +64,28 @@
 }
 
 /* ─── Dark theme ─────────────────────────────────────────────
-   Same palette, inverted for low light: a near-black green canvas, raised green-grey
-   surfaces, and lime as the ink colour where light mode uses hunter green. Brand panels
-   (sidebar, heroes, dialog headers) stay deep green so the identity carries over. */
+   Charcoal black for the page and cards, the same forest green as light mode for brand
+   panels and primary buttons, and lime for highlights, ink and focus. */
 .dark {
   color-scheme: dark;
 
-  --canvas: #0a1513;
-  --canvas-soft: #13211e;
-  --surface: #111e1b;
-  --surface-foreground: #e4ede9;
+  --canvas: #111211; /* charcoal black */
+  --canvas-soft: #1d1f1e; /* inputs and wells */
+  --surface: #191a1a; /* cards, a step up from the page */
+  --surface-foreground: #ececea;
 
-  --foreground: #e4ede9;
-  --muted-foreground: #93a7a0;
-  --subtle: #1a2b27;
-  --border: color-mix(in oklab, #e4ede9 11%, transparent);
+  --foreground: #ececea;
+  --muted-foreground: #9da19f;
+  --subtle: #252726; /* hover / zebra on surfaces */
+  --border: color-mix(in oklab, #ffffff 10%, transparent);
   --ring: #c8f169;
 
-  --brand: #154b41;
-  --brand-strong: #0d342e;
-  --brand-foreground: #f2f7f4;
+  /* Forest green, identical to light mode, so the brand reads the same in both themes. */
+  --brand: #023933;
+  --brand-strong: #012722;
+  --brand-foreground: #fdfefd;
   --brand-muted: #9fb5ae;
-  --brand-ink: #c8f169;
+  --brand-ink: #c8f169; /* lime: forest green would vanish as ink on charcoal */
 
   --accent: #c8f169;
   --accent-foreground: #023933;
@@ -94,28 +94,28 @@
   --status-observation: #e2a93c;
   --status-stable: #5bb882;
   --status-recovering: #4fb3c4;
-  --status-discharged: #9aa39f;
+  --status-discharged: #9da19f;
 
   --danger: #e2583f;
   --danger-foreground: #fdfefd;
 
-  --chart-1: #a9dcc8;
+  --chart-1: #c8f169; /* trend line in lime */
   --chart-2: #c8f169;
-  --chart-3: #5fa694;
+  --chart-3: #4f8a7b;
   --chart-4: #e0b155;
   --chart-5: #c4b598;
 
-  /* Lifted one step so the largest value still reads against the dark surface. */
-  --scale-1: #1b6455;
-  --scale-2: #267463;
-  --scale-3: #348470;
-  --scale-4: #46947a;
-  --scale-5: #66ab86;
+  /* Forest green → lime, lifted at the dark end so the largest bar still reads on charcoal. */
+  --scale-1: #0f5a4c;
+  --scale-2: #1a6a59;
+  --scale-3: #2a7c66;
+  --scale-4: #3f8f73;
+  --scale-5: #62a882;
   --scale-6: #8cc28b;
   --scale-7: #b0db7d;
   --scale-8: #c8f169;
 
-  --focus-glow: color-mix(in oklab, var(--accent) 30%, transparent);
+  --focus-glow: color-mix(in oklab, var(--accent) 28%, transparent);
   --danger-glow: color-mix(in oklab, var(--danger) 24%, transparent);
 }
 
