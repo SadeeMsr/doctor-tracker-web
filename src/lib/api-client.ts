@@ -97,6 +97,17 @@ async function parseError(res: Response): Promise<ApiError> {
   }
 }
 
+/**
+ * Endpoints where a 401 must not trigger refresh-and-retry: a failed login or logout is final,
+ * and refreshing the refresh call would loop. Everything else, including `/auth/me`, refreshes
+ * an expired access token and retries once, like any other request.
+ */
+const NO_REFRESH_PATHS: ReadonlySet<string> = new Set([
+  '/auth/login',
+  '/auth/refresh',
+  '/auth/logout',
+]);
+
 export async function apiRequest<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { query, body, skipRefresh, idempotencyKey, headers, ...init } = options;
 
@@ -112,7 +123,7 @@ export async function apiRequest<T>(path: string, options: RequestOptions = {}):
     ...(body !== undefined && { body: JSON.stringify(body) }),
   });
 
-  if (res.status === 401 && !skipRefresh && !path.startsWith('/auth/')) {
+  if (res.status === 401 && !skipRefresh && !NO_REFRESH_PATHS.has(path)) {
     const refreshed = await refreshSession();
     if (refreshed) return apiRequest<T>(path, { ...options, skipRefresh: true });
 
