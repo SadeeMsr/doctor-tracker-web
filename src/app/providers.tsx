@@ -5,23 +5,18 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { ThemeProvider } from 'next-themes';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { ReactNode } from 'react';
-import { Toaster } from 'sonner';
 
+import { ThemedToaster } from '@/components/feedback/themed-toaster';
 import { getQueryClient } from '@/lib/query-client';
 
 export function Providers({ children }: { children: ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="light"
-      enableSystem={false}
-      disableTransitionOnChange
-    >
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
       <QueryClientProvider client={queryClient}>
         <NuqsAdapter>{children}</NuqsAdapter>
-        <Toaster richColors closeButton position="top-right" />
+        <ThemedToaster />
         <ReactQueryDevtools buttonPosition="bottom-left" />
       </QueryClientProvider>
     </ThemeProvider>

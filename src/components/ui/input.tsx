@@ -6,14 +6,14 @@ export const inputStyles = tv({
     wrapper: [
       // --input-bg is shared with the input, so autofill can be repainted in the same colour.
       'group/input relative flex items-center rounded-2xl bg-(--input-bg) [--input-bg:var(--surface)]',
-      'shadow-xs ring-1 ring-border transition-[box-shadow] duration-200 hover:ring-brand/30',
-      'focus-within:shadow-focus focus-within:ring-brand',
+      'shadow-xs ring-1 ring-border transition-[box-shadow] duration-200 hover:ring-brand-ink/30',
+      'focus-within:shadow-focus focus-within:ring-brand-ink',
       'has-[input[aria-invalid=true]]:ring-danger',
       'has-[input[aria-invalid=true]]:focus-within:shadow-focus-danger',
     ],
     icon: [
       'pointer-events-none absolute left-4 text-muted-foreground transition-colors',
-      'group-focus-within/input:text-brand [&_svg]:size-[1.1rem]',
+      'group-focus-within/input:text-brand-ink [&_svg]:size-[1.1rem]',
     ],
     input: [
       'peer h-full w-full rounded-[inherit] bg-transparent text-[0.95rem] text-foreground outline-none',

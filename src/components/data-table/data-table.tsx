@@ -95,7 +95,7 @@ export function DataTable<TData extends RowData>({
       <div className="hidden overflow-x-auto overscroll-x-contain rounded-3xl bg-surface ring-1 ring-border md:block">
         <DesktopTable {...table} />
       </div>
-      <ul className="grid gap-3 md:hidden">
+      <ul className="grid grid-cols-1 gap-3 md:hidden">
         {table.data.map((row) => (
           <li key={table.getRowId(row)}>{renderCard(row)}</li>
         ))}

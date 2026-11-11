@@ -242,6 +242,9 @@ Then `lib/` (pure helpers) sits under all of them.
 - **Use semantic design tokens from `src/app/globals.css`:**
   - `bg-surface`, `bg-muted`, `text-muted-foreground`, `border-border`, `bg-primary`,
     `text-danger`, `chart-1..5`, `rounded-lg`
+  - `bg-brand` is for brand _surfaces_ (sidebar, heroes, dialog headers). When the brand colour
+    is used as ink on a surface (icons, ticks, focus rings, dashed borders), use `brand-ink`:
+    hunter green in light mode, lime in dark mode
   - Never raw palette colours (`bg-blue-500`), hex values or arbitrary colours. Need a new
     colour? Add a token for both light and dark first.
 - **Variants:**
@@ -255,8 +258,9 @@ Then `lib/` (pure helpers) sits under all of them.
   - mobile-first: design for 375px, enhance with `sm:`/`md:`/`lg:`
   - no horizontal page scroll at any width
   - data tables become stacked cards below `md`
-- Dark mode works through the `.dark` class (next-themes). Every new UI must look right in both
-  themes.
+- Dark mode works through the `.dark` class (next-themes; light, dark or system, chosen in the
+  account menu). Dark values live in the `.dark` block of `globals.css`. Every new UI must look
+  right in both themes.
 - Icons come from `lucide-react`; decorative icons get `aria-hidden`.
 
 ## Forms

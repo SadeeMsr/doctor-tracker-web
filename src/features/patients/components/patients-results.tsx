@@ -4,6 +4,7 @@ import { SearchX, Users } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { Pagination } from '@/components/data-table/pagination';
+import { ResultCount } from '@/components/data-table/result-count';
 import { TableSkeleton } from '@/components/data-table/table-skeleton';
 import { EmptyState } from '@/components/feedback/empty-state';
 import { ErrorState } from '@/components/feedback/error-state';
@@ -79,6 +80,11 @@ export function PatientsResults({
 
   return (
     <div className="space-y-4">
+      <ResultCount
+        total={meta.total}
+        noun={['patient', 'patients'] as const}
+        isFiltered={state.hasFilters}
+      />
       <PatientsTable
         patients={patients}
         isStale={query.isPlaceholderData}

@@ -27,7 +27,8 @@ export function isApiError(error: unknown): error is ApiError {
   return error instanceof ApiError;
 }
 
-type QueryValue = string | number | boolean | null | undefined;
+/** Arrays become repeated keys (`?hospital=A&hospital=B`), safe for values containing commas. */
+type QueryValue = string | number | boolean | null | undefined | readonly string[];
 
 interface RequestOptions extends Omit<RequestInit, 'body'> {
   query?: Record<string, QueryValue>;
@@ -41,7 +42,11 @@ interface RequestOptions extends Omit<RequestInit, 'body'> {
 function buildUrl(path: string, query?: Record<string, QueryValue>): string {
   const params = new URLSearchParams();
   for (const [key, value] of Object.entries(query ?? {})) {
-    if (value !== undefined && value !== null && value !== '') params.set(key, String(value));
+    if (Array.isArray(value)) {
+      for (const item of value) params.append(key, item);
+    } else if (value !== undefined && value !== null && value !== '') {
+      params.set(key, String(value));
+    }
   }
   const qs = params.toString();
   return `${API_BASE_PATH}${path}${qs ? `?${qs}` : ''}`;

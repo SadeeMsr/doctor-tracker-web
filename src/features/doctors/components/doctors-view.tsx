@@ -1,11 +1,12 @@
 'use client';
 
 import { Plus } from 'lucide-react';
-import { parseAsBoolean, useQueryState } from 'nuqs';
+import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs';
 
 import { PageHeader } from '@/components/feedback/page-header';
 import { Button } from '@/components/ui/button';
 import { useDisclosure } from '@/hooks/use-disclosure';
+import { ADD_PATIENT_PARAM } from '@/lib/constants';
 
 import { useDoctorFilters } from '../hooks/use-doctor-filters';
 import type { Doctor } from '../types';
@@ -23,6 +24,8 @@ export function DoctorsView() {
   const editing = useDisclosure<Doctor>();
   const deleting = useDisclosure<Doctor>();
   const openCreate = () => void setIsCreating(true);
+  // The patients feature, mounted next to this view by the page, opens its form from the URL.
+  const [, setAddPatientFor] = useQueryState(ADD_PATIENT_PARAM, parseAsString);
 
   return (
     <div className="space-y-6">
@@ -41,6 +44,7 @@ export function DoctorsView() {
       <DoctorsResults
         state={state}
         onCreate={openCreate}
+        onAddPatient={(doctor) => void setAddPatientFor(doctor.id)}
         onEdit={editing.show}
         onDelete={deleting.show}
       />

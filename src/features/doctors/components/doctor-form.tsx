@@ -4,14 +4,29 @@ import { FormActions } from '@/components/feedback/form-actions';
 import { DialogBody } from '@/components/ui/dialog';
 import { Fieldset } from '@/components/ui/fieldset';
 
-import { useDoctorForm } from '../hooks/use-doctor-form';
+import { useDoctorForm, type DoctorCarry } from '../hooks/use-doctor-form';
 import type { Doctor } from '../types';
 
 import { DoctorContactFields } from './doctor-contact-fields';
 import { DoctorProfileFields } from './doctor-profile-fields';
 
-export function DoctorForm({ doctor, onDone }: { doctor?: Doctor; onDone: () => void }) {
-  const { form, onSubmit, isPending } = useDoctorForm({ doctor, onDone });
+function addedSoFar(count: number): string {
+  return `${String(count)} ${count === 1 ? 'doctor' : 'doctors'} added so far. Ready for the next one.`;
+}
+
+interface DoctorFormProps {
+  doctor?: Doctor;
+  /** Kept from the previous doctor in "Save & add another". */
+  carry?: DoctorCarry;
+  /** Doctors saved so far in this dialog visit. */
+  addedCount: number;
+  onDone: () => void;
+  onSavedAndNext: (carry: DoctorCarry) => void;
+}
+
+export function DoctorForm({ addedCount, ...options }: DoctorFormProps) {
+  const { doctor, onDone } = options;
+  const { form, onSubmit, onSubmitAnother, isPending } = useDoctorForm(options);
   const { errors } = form.formState;
 
   return (
@@ -31,9 +46,11 @@ export function DoctorForm({ doctor, onDone }: { doctor?: Doctor; onDone: () => 
       </DialogBody>
       <FormActions
         error={errors.root?.message}
+        note={addedCount > 0 ? addedSoFar(addedCount) : undefined}
         isPending={isPending}
         submitLabel={doctor ? 'Save changes' : 'Add doctor'}
         onCancel={onDone}
+        {...(!doctor && { secondaryLabel: 'Save & add another', onSecondary: onSubmitAnother })}
       />
     </form>
   );

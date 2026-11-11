@@ -17,12 +17,19 @@ import {
 } from '../schemas';
 import type { Patient } from '../types';
 
+/** Values kept from one new patient to the next in "Save & add another". */
+export type PatientCarry = Pick<PatientValues, 'doctorId' | 'admittedAt'>;
+
 interface UsePatientFormOptions {
   /** Present when editing. */
   patient?: Patient;
   /** The doctor a new patient is added under. */
   doctorId?: string;
+  /** Doctor and admission date carried over from the previous patient. */
+  carry?: PatientCarry;
   onDone: () => void;
+  /** "Save & add another": the dialog remounts the form with these values kept. */
+  onSavedAndNext?: (carry: PatientCarry) => void;
 }
 
 function defaultValues(patient?: Patient, doctorId?: string): Partial<PatientValues> {
@@ -40,21 +47,23 @@ function defaultValues(patient?: Patient, doctorId?: string): Partial<PatientVal
 }
 
 /** Create/edit behaviour for the patient form, so the component only renders. */
-export function usePatientForm({ patient, doctorId, onDone }: UsePatientFormOptions) {
+export function usePatientForm(options: UsePatientFormOptions) {
+  const { patient, doctorId, carry, onDone, onSavedAndNext } = options;
   const create = useCreatePatient();
   const update = useUpdatePatient();
-  // One key per form session: patients have no unique field, so this is the duplicate guard.
+  // One key per form mount, and the form remounts for each new patient: patients have no
+  // unique field, so this is what stops a retried submit from creating a duplicate.
   const [idempotencyKey] = useState(() => crypto.randomUUID());
 
   const form = useForm<PatientValues>({
     resolver: zodResolver(patientSchema),
-    defaultValues: defaultValues(patient, doctorId),
+    defaultValues: { ...defaultValues(patient, doctorId), ...carry },
     mode: 'onTouched',
   });
   // Read during render: React Hook Form only tracks the form state a render has asked for.
   const { dirtyFields } = form.formState;
 
-  const onSubmit = form.handleSubmit(async (values) => {
+  const save = async (values: PatientValues, addAnother: boolean) => {
     try {
       if (patient) {
         const changes = toPatientChanges(values, dirtyFields);
@@ -66,11 +75,20 @@ export function usePatientForm({ patient, doctorId, onDone }: UsePatientFormOpti
           idempotencyKey,
         });
       }
-      onDone();
+      if (addAnother && onSavedAndNext) {
+        onSavedAndNext({ doctorId: values.doctorId, admittedAt: values.admittedAt });
+      } else {
+        onDone();
+      }
     } catch (error) {
       applyApiErrors(error, form.setError, PATIENT_FIELDS);
     }
-  });
+  };
 
-  return { form, onSubmit, isPending: create.isPending || update.isPending };
+  return {
+    form,
+    onSubmit: form.handleSubmit((values) => save(values, false)),
+    onSubmitAnother: form.handleSubmit((values) => save(values, true)),
+    isPending: create.isPending || update.isPending,
+  };
 }

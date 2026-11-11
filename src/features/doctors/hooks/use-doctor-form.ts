@@ -10,17 +10,25 @@ import { useCreateDoctor, useUpdateDoctor } from '../queries';
 import { DOCTOR_FIELDS, doctorSchema, type DoctorValues } from '../schemas';
 import type { Doctor, DoctorInput } from '../types';
 
+/** Kept from one new doctor to the next: doctors are often onboarded hospital by hospital. */
+export type DoctorCarry = Pick<DoctorValues, 'hospital'>;
+
 interface UseDoctorFormOptions {
   /** Present when editing; absent when creating. */
   doctor?: Doctor;
+  /** Hospital carried over from the previous doctor. */
+  carry?: DoctorCarry;
   onDone: () => void;
+  /** "Save & add another": the dialog remounts the form with these values kept. */
+  onSavedAndNext?: (carry: DoctorCarry) => void;
 }
 
 /** Create/edit behaviour for the doctor form, so the component only renders. */
-export function useDoctorForm({ doctor, onDone }: UseDoctorFormOptions) {
+export function useDoctorForm({ doctor, carry, onDone, onSavedAndNext }: UseDoctorFormOptions) {
   const create = useCreateDoctor();
   const update = useUpdateDoctor();
-  // One key per form session: a resubmit after a timeout can't create a second doctor.
+  // One key per form mount, and the form remounts for each new doctor: a resubmit after a
+  // timeout can't create a second doctor.
   const [idempotencyKey] = useState(() => crypto.randomUUID());
 
   const form = useForm<DoctorValues>({
@@ -28,7 +36,7 @@ export function useDoctorForm({ doctor, onDone }: UseDoctorFormOptions) {
     defaultValues: {
       name: doctor?.name ?? '',
       specialization: doctor?.specialization,
-      hospital: doctor?.hospital ?? '',
+      hospital: doctor?.hospital ?? carry?.hospital ?? '',
       phone: doctor?.phone ?? '',
       email: doctor?.email ?? '',
     },
@@ -37,7 +45,7 @@ export function useDoctorForm({ doctor, onDone }: UseDoctorFormOptions) {
   // Read during render: React Hook Form only tracks the form state a render has asked for.
   const { dirtyFields } = form.formState;
 
-  const onSubmit = form.handleSubmit(async (values) => {
+  const save = async (values: DoctorValues, addAnother: boolean) => {
     try {
       if (doctor) {
         // PATCH carries only what changed, as final values.
@@ -51,11 +59,20 @@ export function useDoctorForm({ doctor, onDone }: UseDoctorFormOptions) {
       } else {
         await create.mutateAsync({ input: values, idempotencyKey });
       }
-      onDone();
+      if (addAnother && onSavedAndNext) {
+        onSavedAndNext({ hospital: values.hospital });
+      } else {
+        onDone();
+      }
     } catch (error) {
       applyApiErrors(error, form.setError, DOCTOR_FIELDS);
     }
-  });
+  };
 
-  return { form, onSubmit, isPending: create.isPending || update.isPending };
+  return {
+    form,
+    onSubmit: form.handleSubmit((values) => save(values, false)),
+    onSubmitAnother: form.handleSubmit((values) => save(values, true)),
+    isPending: create.isPending || update.isPending,
+  };
 }

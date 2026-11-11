@@ -22,6 +22,8 @@
   --brand-strong: #012722;
   --brand-foreground: #fdfefd;
   --brand-muted: #9fb5ae; /* secondary text on brand surfaces */
+  /* The brand colour used as ink on surfaces: icons, ticks, focus rings, dashed borders. */
+  --brand-ink: #023933;
 
   --accent: #c8f169; /* Lime: badges, highlights, active marks */
   --accent-foreground: #023933;
@@ -61,6 +63,62 @@
   --radius: 1rem;
 }
 
+/* ─── Dark theme ─────────────────────────────────────────────
+   Charcoal black for the page and cards, the same forest green as light mode for brand
+   panels and primary buttons, and lime for highlights, ink and focus. */
+.dark {
+  color-scheme: dark;
+
+  --canvas: #111211; /* charcoal black */
+  --canvas-soft: #1d1f1e; /* inputs and wells */
+  --surface: #191a1a; /* cards, a step up from the page */
+  --surface-foreground: #ececea;
+
+  --foreground: #ececea;
+  --muted-foreground: #9da19f;
+  --subtle: #252726; /* hover / zebra on surfaces */
+  --border: color-mix(in oklab, #ffffff 10%, transparent);
+  --ring: #c8f169;
+
+  /* Forest green, identical to light mode, so the brand reads the same in both themes. */
+  --brand: #023933;
+  --brand-strong: #012722;
+  --brand-foreground: #fdfefd;
+  --brand-muted: #9fb5ae;
+  --brand-ink: #c8f169; /* lime: forest green would vanish as ink on charcoal */
+
+  --accent: #c8f169;
+  --accent-foreground: #023933;
+
+  --status-critical: #ec6f57;
+  --status-observation: #e2a93c;
+  --status-stable: #5bb882;
+  --status-recovering: #4fb3c4;
+  --status-discharged: #9da19f;
+
+  --danger: #e2583f;
+  --danger-foreground: #fdfefd;
+
+  --chart-1: #c8f169; /* trend line in lime */
+  --chart-2: #c8f169;
+  --chart-3: #4f8a7b;
+  --chart-4: #e0b155;
+  --chart-5: #c4b598;
+
+  /* Forest green → lime, lifted at the dark end so the largest bar still reads on charcoal. */
+  --scale-1: #0f5a4c;
+  --scale-2: #1a6a59;
+  --scale-3: #2a7c66;
+  --scale-4: #3f8f73;
+  --scale-5: #62a882;
+  --scale-6: #8cc28b;
+  --scale-7: #b0db7d;
+  --scale-8: #c8f169;
+
+  --focus-glow: color-mix(in oklab, var(--accent) 28%, transparent);
+  --danger-glow: color-mix(in oklab, var(--danger) 24%, transparent);
+}
+
 @theme inline {
   --color-canvas: var(--canvas);
   --color-canvas-soft: var(--canvas-soft);
@@ -75,6 +133,7 @@
   --color-brand-strong: var(--brand-strong);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-muted: var(--brand-muted);
+  --color-brand-ink: var(--brand-ink);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-status-critical: var(--status-critical);

@@ -14,14 +14,26 @@ import { DoctorRowActions } from './doctor-row-actions';
 interface DoctorsTableProps {
   doctors: Doctor[];
   isStale: boolean;
+  onAddPatient: (doctor: Doctor) => void;
   onEdit: (doctor: Doctor) => void;
   onDelete: (doctor: Doctor) => void;
 }
 
 /** One page of doctors: a table on desktop, cards on phones. */
-export function DoctorsTable({ doctors, isStale, onEdit, onDelete }: DoctorsTableProps) {
+export function DoctorsTable({
+  doctors,
+  isStale,
+  onAddPatient,
+  onEdit,
+  onDelete,
+}: DoctorsTableProps) {
   const actions = (doctor: Doctor) => (
-    <DoctorRowActions doctor={doctor} onEdit={onEdit} onDelete={onDelete} />
+    <DoctorRowActions
+      doctor={doctor}
+      onAddPatient={onAddPatient}
+      onEdit={onEdit}
+      onDelete={onDelete}
+    />
   );
 
   const columns: DataTableColumn<Doctor>[] = [
@@ -45,7 +57,7 @@ export function DoctorsTable({ doctors, isStale, onEdit, onDelete }: DoctorsTabl
     {
       id: 'patients',
       header: 'Patients',
-      cell: (doctor) => <DoctorPatientsLink doctor={doctor} />,
+      cell: (doctor) => <DoctorPatientsLink doctor={doctor} onAddPatient={onAddPatient} />,
     },
     {
       id: 'added',
@@ -63,7 +75,9 @@ export function DoctorsTable({ doctors, isStale, onEdit, onDelete }: DoctorsTabl
       data={doctors}
       getRowId={(doctor) => doctor.id}
       isStale={isStale}
-      renderCard={(doctor) => <DoctorCard doctor={doctor} actions={actions(doctor)} />}
+      renderCard={(doctor) => (
+        <DoctorCard doctor={doctor} actions={actions(doctor)} onAddPatient={onAddPatient} />
+      )}
     />
   );
 }

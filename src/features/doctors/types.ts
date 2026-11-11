@@ -20,8 +20,10 @@ export type DoctorListParams = {
   page: number;
   limit: number;
   search?: string;
-  specialization?: Specialization;
-  hospital?: string;
+  /** Any of these (sent as repeated keys). */
+  specialization?: readonly Specialization[];
+  /** Any of these hospitals (sent as repeated keys: names may contain commas). */
+  hospital?: readonly string[];
   from?: string;
   to?: string;
   sortBy: 'createdAt' | 'name';
