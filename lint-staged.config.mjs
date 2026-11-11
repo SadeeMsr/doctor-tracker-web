@@ -5,6 +5,8 @@
  */
 const config = {
   '*.{ts,tsx,js,mjs,cjs}': ['eslint --fix --max-warnings=0', 'prettier --write'],
+  // Only the tests that import a staged file (directly or not); the full suite runs on push.
+  '*.{ts,tsx}': 'vitest related --run --passWithNoTests',
   '*.{json,md,css,yml,yaml}': 'prettier --write',
 };
 

@@ -109,6 +109,26 @@ repository is the **Next.js frontend**. The REST API lives in a separate reposit
 | `pnpm lint` · `pnpm typecheck` | ESLint (including the component size limits) and `tsc` with generated route types |
 | `pnpm format`                  | Prettier                                                                          |
 
+## Tests
+
+```bash
+pnpm test
+```
+
+68 tests with Vitest and Testing Library (jsdom). Each test sits **next to the file it covers**, inside its feature (`features/doctors/components/doctor-form.test.tsx`). Shared helpers live in `src/test/`: a provider wrapper and a fake API. Components are queried by role and accessible name, the way assistive technology finds them; writing these tests caught two real screen-reader labelling bugs.
+
+| Area                | What's proven                                                                                                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Doctor form         | client validation, the create request (body and `Idempotency-Key`), a duplicate-email `409` on the email field, "Save & add another" carrying the hospital, edit sending a PATCH with only the changed field |
+| Patient form        | doctor picker hidden on a doctor's page, validation, ISO dates and a null email in the request, "Save & add another" keeping the doctor and admission date, server `422` errors on the right fields          |
+| Doctors filters     | several specializations and hospitals written to the URL (names with commas intact), reset to page 1, "Clear all" with a count                                                                               |
+| Login               | validation, redirect back to `?next=`, no open redirect, one generic error for bad credentials with the password cleared                                                                                     |
+| Schemas and helpers | phone, email and date rules; request shaping; the specialization treemap's "Other" tile; time-zone-safe chart labels                                                                                         |
+| API client          | refresh-and-retry on 401 (also `/auth/me`), no refresh for a failed login, redirect when the session is gone, typed errors, network failures, repeated query keys                                            |
+| Keyboard shortcuts  | matching on Mac and other platforms, sequences, no firing while typing or with a dialog open, the WCAG 2.1.4 switch                                                                                          |
+
+Husky runs the related tests on every commit and the full suite before every push; CI runs it too.
+
 ## System architecture
 
 ```mermaid

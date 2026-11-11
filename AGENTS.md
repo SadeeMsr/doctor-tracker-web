@@ -33,6 +33,7 @@ Admin dashboard for managing doctors and their patients, with analytics charts.
 | --------------------- | --------------------------------------------------------------------------- |
 | Dev server            | `pnpm dev` (the API must run on `API_URL`, default `http://localhost:4000`) |
 | Lint / types / format | `pnpm lint` · `pnpm typecheck` · `pnpm format`                              |
+| Tests                 | `pnpm test` · `pnpm test:watch`                                             |
 | Production build      | `pnpm build` (catches prerender and Suspense errors that typecheck misses)  |
 
 Run `pnpm lint && pnpm typecheck && pnpm build` before you say something is done.
@@ -87,6 +88,7 @@ src/
     feedback/             EmptyState, ErrorState, ConfirmDialog, skeletons, PageHeader
   hooks/                  generic hooks used by 2+ features (useDebounce, useMediaQuery)
   lib/                    framework-agnostic helpers: api-client, query-client, cn, constants
+  test/                   test-only helpers: renderWithProviders, mockApi (tests sit beside code)
 ```
 
 - Code used by one feature lives in that feature. It moves to `components/` or `hooks/` only
@@ -417,6 +419,31 @@ and must behave correctly when one happens.
 - No `console.*` in committed code (except `console.error` in error boundaries).
 - Comments explain **why**, not what.
 
+## Tests
+
+Vitest + Testing Library (jsdom). `pnpm test` runs the suite.
+
+- **Tests live next to the code they cover:** `doctor-form.tsx` → `doctor-form.test.tsx` in the
+  same folder. A feature's tests stay inside the feature. Never put tests in `app/` (Next would
+  treat them as routes).
+- **Shared helpers live in `src/test/`:**
+  - `renderWithProviders()`: a fresh TanStack Query client and in-memory nuqs URL state
+    (assert URL changes with `onUrlUpdate`)
+  - `mockApi()`: a fake `fetch` keyed by `METHOD /path` that fails on unexpected requests;
+    `requestOf()` reads the body and headers that were sent; `json()` / `apiError()` build
+    responses
+- **What to test, per feature:**
+  - forms: client validation, the request sent (body, `Idempotency-Key`, PATCH with only changed
+    fields), server `422`/`409` mapped onto fields, "Save & add another"
+  - URL-driven UI: the query string written (filters, reset to page 1, Clear all)
+  - schemas and pure helpers: the rules they enforce
+- **Query by role and accessible name** (`getByRole('button', { name: 'Add doctor' })`), never by
+  class or test id. A test that can't find an element by name has usually found an accessibility
+  bug.
+- Test files may exceed the function-length limit (one `describe` per behaviour); production code
+  may not.
+- **Hooks:** pre-commit runs `vitest related` on staged files; pre-push and CI run the full suite.
+
 ## Git workflow
 
 - One branch per slice: `feat/<slice>`, `fix/<thing>`, `chore/<thing>`. Never commit to `main`
@@ -429,7 +456,7 @@ and must behave correctly when one happens.
 ## Boundaries: ask before you
 
 - add, remove or upgrade a dependency (especially UI kits, state libraries or CSS-in-JS)
-- add tests or test tooling: they're deferred until the app is feature-complete
+- add test tooling beyond Vitest and Testing Library
 - change the design tokens, folder structure, lint/TS config or `next.config.ts`
 - change how auth, the API client or the `/api` rewrite work
 - do anything not asked for (no drive-by refactors, no speculative abstractions, no new
@@ -447,7 +474,7 @@ and must behave correctly when one happens.
 - [ ] Submits can't double-fire; creates send an `Idempotency-Key`; a DELETE 404 counts as
       success.
 - [ ] It works at 375px and at desktop width; it is keyboard accessible.
-- [ ] `pnpm lint && pnpm typecheck && pnpm build` all pass.
+- [ ] `pnpm lint && pnpm typecheck && pnpm test && pnpm build` all pass.
 - [ ] You checked it in a real browser against the running API and reported exactly what was
       verified.
 - [ ] No TODOs, dead code, commented-out code or stray `console` calls.
