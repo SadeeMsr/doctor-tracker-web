@@ -4,7 +4,8 @@ export const FALLBACK_ERROR_MESSAGE = 'Something went wrong. Please try again.';
 
 /**
  * User-facing copy for error codes whose API message isn't meant for end users, or that come
- * from the client itself. Other codes use the API's `message`, which is written for users.
+ * from the client itself. Other codes (including 401 "Invalid email or password" and 403) use
+ * the API's `message`, which is written for users and more specific than any generic copy.
  * When the API adds a code, add its message here in the same change.
  */
 const MESSAGES: Readonly<Record<string, string>> = {
@@ -12,8 +13,6 @@ const MESSAGES: Readonly<Record<string, string>> = {
   UNEXPECTED_RESPONSE: 'The server sent an unexpected response. Please try again.',
   INTERNAL_ERROR: 'Something went wrong on our side. Please try again.',
   TOO_MANY_REQUESTS: 'Too many attempts. Wait a moment and try again.',
-  UNAUTHORIZED: 'Your session has expired. Please sign in again.',
-  FORBIDDEN: "You don't have permission to do that.",
   IDEMPOTENCY_IN_PROGRESS: 'Your previous request is still being processed.',
   IDEMPOTENCY_KEY_REUSED: 'This form was already submitted with different values. Reopen it.',
 };
