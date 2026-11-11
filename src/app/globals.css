@@ -3,67 +3,70 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ─── Design tokens ──────────────────────────────────────────
-   Semantic colors as CSS variables, so every component reads
-   from one source and dark mode is a single class swap. */
+   Palette: Hunter Green (brand), Soft Beige (canvas), Polar Snow
+   (surfaces), Lime (accent: fills only, never text on light).
+   Components read semantic names only, never raw colours. */
 :root {
-  --background: oklch(0.985 0.002 247);
-  --foreground: oklch(0.21 0.02 265);
-  --surface: oklch(1 0 0);
-  --surface-foreground: oklch(0.21 0.02 265);
-  --muted: oklch(0.967 0.004 247);
-  --muted-foreground: oklch(0.55 0.02 264);
-  --border: oklch(0.92 0.006 255);
-  --ring: oklch(0.6 0.13 190);
+  --canvas: #e7dbc5; /* Soft Beige: the app background */
+  --canvas-soft: #f1ebde; /* inputs and wells on the canvas */
+  --surface: #fdfefd; /* Polar Snow: cards, panels */
+  --surface-foreground: #0e2420;
 
-  --primary: oklch(0.55 0.12 190);
-  --primary-foreground: oklch(0.99 0 0);
-  --primary-subtle: oklch(0.95 0.03 190);
+  --foreground: #0e2420; /* near-black green: body text */
+  --muted-foreground: #5c6d68;
+  --subtle: #ede5d6; /* hover / zebra on surfaces */
+  --border: color-mix(in oklab, #023933 12%, transparent);
+  --ring: #023933;
 
-  --success: oklch(0.63 0.15 150);
-  --warning: oklch(0.77 0.15 75);
-  --danger: oklch(0.58 0.21 25);
-  --danger-foreground: oklch(0.99 0 0);
+  --brand: #023933; /* Hunter Green */
+  --brand-strong: #012722;
+  --brand-foreground: #fdfefd;
+  --brand-muted: #9fb5ae; /* secondary text on brand surfaces */
 
-  --chart-1: oklch(0.6 0.12 190);
-  --chart-2: oklch(0.62 0.17 265);
-  --chart-3: oklch(0.72 0.15 75);
-  --chart-4: oklch(0.63 0.2 330);
-  --chart-5: oklch(0.65 0.15 150);
+  --accent: #c8f169; /* Lime: badges, highlights, active marks */
+  --accent-foreground: #023933;
 
-  --radius: 0.625rem;
-}
+  /* Patient conditions: always paired with a text label */
+  --status-critical: #c2412d;
+  --status-observation: #c98a14;
+  --status-stable: #2f7d4f;
+  --status-recovering: #2a7f8f;
+  --status-discharged: #7b847f;
 
-.dark {
-  --background: oklch(0.16 0.012 265);
-  --foreground: oklch(0.96 0.004 250);
-  --surface: oklch(0.2 0.014 265);
-  --surface-foreground: oklch(0.96 0.004 250);
-  --muted: oklch(0.25 0.014 265);
-  --muted-foreground: oklch(0.7 0.015 260);
-  --border: oklch(0.3 0.014 265);
-  --ring: oklch(0.7 0.12 190);
+  --danger: #b4321f;
+  --danger-foreground: #fdfefd;
 
-  --primary: oklch(0.7 0.12 190);
-  --primary-foreground: oklch(0.16 0.012 265);
-  --primary-subtle: oklch(0.3 0.05 190);
+  /* Charts: hunter → lime → warm, distinguishable side by side */
+  --chart-1: #023933;
+  --chart-2: #c8f169;
+  --chart-3: #4f8a7b;
+  --chart-4: #d9a441;
+  --chart-5: #b5a58a;
 
-  --danger: oklch(0.65 0.2 25);
+  --radius: 1rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-canvas: var(--canvas);
+  --color-canvas-soft: var(--canvas-soft);
   --color-surface: var(--surface);
   --color-surface-foreground: var(--surface-foreground);
-  --color-muted: var(--muted);
+  --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
+  --color-subtle: var(--subtle);
   --color-border: var(--border);
   --color-ring: var(--ring);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary-subtle: var(--primary-subtle);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-brand-muted: var(--brand-muted);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-status-critical: var(--status-critical);
+  --color-status-observation: var(--status-observation);
+  --color-status-stable: var(--status-stable);
+  --color-status-recovering: var(--status-recovering);
+  --color-status-discharged: var(--status-discharged);
   --color-danger: var(--danger);
   --color-danger-foreground: var(--danger-foreground);
   --color-chart-1: var(--chart-1);
@@ -72,13 +75,97 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 8px);
+  --radius-md: calc(var(--radius) - 4px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --radius-xl: calc(var(--radius) + 8px);
+  --radius-2xl: calc(var(--radius) + 16px);
 
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-poppins);
   --font-mono: var(--font-geist-mono);
+
+  --animate-pulse-draw: pulse-draw 4.2s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+  --animate-ping-soft: ping-soft 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+  --animate-rise: rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+  /* Transform only, never opacity: for the largest element on screen, so LCP isn't delayed. */
+  --animate-lift: lift 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-shake: shake 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+/* GPU-only properties (stroke offset, transform, opacity): no layout, no paint storms. */
+@keyframes pulse-draw {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  8% {
+    opacity: 1;
+  }
+  70% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+@keyframes ping-soft {
+  0% {
+    transform: scale(1);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    transform: translateY(14px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes lift {
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes shake {
+  20%,
+  60% {
+    transform: translateX(-5px);
+  }
+  40%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+@utility grain {
+  /* Film grain: one tiny inline SVG, tiled; makes flat colour feel tactile. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@utility ecg-grid {
+  /* ECG paper: 5 small squares per large square. */
+  background-image:
+    linear-gradient(to right, rgb(253 254 253 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(253 254 253 / 0.07) 1px, transparent 1px),
+    linear-gradient(to right, rgb(253 254 253 / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(253 254 253 / 0.03) 1px, transparent 1px);
+  background-size:
+    80px 80px,
+    80px 80px,
+    16px 16px,
+    16px 16px;
 }
 
 @layer base {
@@ -86,11 +173,30 @@
     @apply border-border;
   }
 
+  html {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-canvas text-foreground antialiased;
+    font-feature-settings: 'ss01';
   }
 
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-ring;
+  }
+
+  ::selection {
+    @apply bg-accent text-accent-foreground;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }

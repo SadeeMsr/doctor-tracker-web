@@ -13,7 +13,12 @@ export function Providers({ children }: { children: ReactNode }) {
   const queryClient = getQueryClient();
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="light"
+      enableSystem={false}
+      disableTransitionOnChange
+    >
       <QueryClientProvider client={queryClient}>
         <NuqsAdapter>{children}</NuqsAdapter>
         <Toaster richColors closeButton position="top-right" />

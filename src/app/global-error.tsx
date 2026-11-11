@@ -25,7 +25,7 @@ export default function GlobalError({ error, retry }: GlobalErrorProps) {
 
   return (
     <html lang="en">
-      <body className="grid min-h-dvh place-items-center bg-background p-4 font-sans text-foreground">
+      <body className="grid min-h-dvh place-items-center bg-canvas p-4 font-sans text-foreground">
         <title>Something went wrong · Doctor Tracker</title>
         <main role="alert" className="max-w-md space-y-3 text-center">
           <h1 className="text-xl font-semibold tracking-tight">Doctor Tracker is unavailable</h1>
@@ -38,7 +38,7 @@ export default function GlobalError({ error, retry }: GlobalErrorProps) {
           <button
             type="button"
             onClick={retry}
-            className="mt-2 h-10 rounded-md bg-primary px-4 text-sm font-medium text-primary-foreground"
+            className="mt-2 h-10 rounded-md bg-brand px-4 text-sm font-medium text-brand-foreground"
           >
             Try again
           </button>
