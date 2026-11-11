@@ -1,15 +1,17 @@
 import { AppSidebar } from '@/components/layout/app-sidebar';
+import { MobileDock, MobileHeader } from '@/components/layout/mobile-nav';
+import { UserMenu } from '@/features/auth/components/user-menu';
 
 export default function DashboardLayout({ children }: LayoutProps<'/'>) {
   return (
-    <div className="flex min-h-dvh">
-      <AppSidebar />
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-10 flex h-16 items-center border-b bg-surface/80 px-4 backdrop-blur sm:px-6">
-          {/* Mobile nav, search and user menu go here. */}
-        </header>
-        <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
-      </div>
+    <div className="min-h-dvh lg:pl-[17.5rem]">
+      <AppSidebar footer={<UserMenu layout="rail" />} />
+      <MobileHeader actions={<UserMenu layout="compact" />} />
+      {/* Bottom padding on phones keeps the last row clear of the floating dock. */}
+      <main className="mx-auto w-full max-w-[88rem] px-4 pt-6 pb-28 sm:px-6 lg:px-8 lg:py-8">
+        {children}
+      </main>
+      <MobileDock />
     </div>
   );
 }
