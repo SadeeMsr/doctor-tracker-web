@@ -41,6 +41,8 @@ repository is the **Next.js frontend**. The REST API lives in a separate reposit
 - **Every state is designed.** Skeletons that match the final layout while loading, empty states
   with a call to action, inline errors with Retry and a support reference, and toasts for
   mutations.
+- **Light and dark themes.** Light, dark or follow the system, chosen in the account menu and
+  remembered. Both themes come from one set of semantic design tokens.
 
 ## Tech stack
 
@@ -246,6 +248,12 @@ filtered view still couldn't be shared or survive a reload.
 | Patients                                                             |
 | -------------------------------------------------------------------- |
 | ![Patients list with filters](docs/screenshots/desktop-patients.png) |
+
+### Dark theme
+
+| Dashboard (desktop)                                                         | Doctors (mobile)                                                                                             |
+| --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| ![Dashboard in the dark theme](docs/screenshots/desktop-dashboard-dark.png) | <img src="docs/screenshots/mobile-doctors-dark.png" width="260" alt="Mobile doctors list in the dark theme"> |
 
 ### Mobile (390 × 844)
 
