@@ -48,7 +48,7 @@ export function PatientsTable({
     {
       id: 'diagnosis',
       header: 'Diagnosis',
-      className: 'max-w-64 max-xl:hidden',
+      className: 'max-w-64 max-2xl:hidden',
       cell: (patient) => <p className="truncate text-muted-foreground">{patient.diagnosis}</p>,
     },
     ...(showDoctor ? [DOCTOR_COLUMN] : []),

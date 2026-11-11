@@ -5,6 +5,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 
 import { cn } from '@/lib/cn';
 
+import { ScrollArea } from './scroll-area';
 import { popupItem, popupSurface } from './surface';
 
 export interface SelectOption<TValue extends string = string> {
@@ -26,28 +27,33 @@ interface SelectProps<TValue extends string> {
 }
 
 const triggerClass = [
-  'flex h-11 w-full items-center justify-between gap-2 rounded-2xl bg-canvas-soft px-4 text-left',
-  'text-[0.95rem] ring-1 ring-transparent transition-[box-shadow,background-color] duration-200',
-  'focus-visible:bg-surface focus-visible:ring-2 focus-visible:ring-brand focus-visible:outline-none',
-  'data-popup-open:bg-surface data-popup-open:ring-2 data-popup-open:ring-brand',
-  'aria-invalid:ring-2 aria-invalid:ring-danger data-disabled:opacity-60',
+  'flex h-11 w-full items-center justify-between gap-2 rounded-2xl bg-surface px-4 text-left',
+  'text-[0.95rem] shadow-xs ring-1 ring-border transition-[box-shadow] duration-200',
+  'hover:ring-brand/30 focus-visible:shadow-focus focus-visible:ring-brand focus-visible:outline-none',
+  'data-popup-open:shadow-focus data-popup-open:ring-brand',
+  'aria-invalid:ring-danger aria-invalid:focus-visible:shadow-focus-danger data-disabled:opacity-60',
 ].join(' ');
 
 function SelectPopup<TValue extends string>({ options }: Pick<SelectProps<TValue>, 'options'>) {
   return (
     <BaseSelect.Portal>
       <BaseSelect.Positioner sideOffset={6} alignItemWithTrigger={false} className="z-[60]">
-        <BaseSelect.Popup className={cn(popupSurface, 'min-w-(--anchor-width)')}>
-          <BaseSelect.List className="max-h-64 overflow-y-auto">
-            {options.map((option) => (
-              <BaseSelect.Item key={option.value} value={option.value} className={popupItem}>
-                <BaseSelect.ItemText className="flex-1">{option.label}</BaseSelect.ItemText>
-                <BaseSelect.ItemIndicator>
-                  <Check className="text-brand" aria-hidden />
-                </BaseSelect.ItemIndicator>
-              </BaseSelect.Item>
-            ))}
-          </BaseSelect.List>
+        <BaseSelect.Popup className={cn(popupSurface, 'flex min-w-(--anchor-width) flex-col p-0')}>
+          <ScrollArea
+            className="max-h-72"
+            contentClassName="p-1.5 group-data-has-overflow-y/scroll-area:pr-3"
+          >
+            <BaseSelect.List>
+              {options.map((option) => (
+                <BaseSelect.Item key={option.value} value={option.value} className={popupItem}>
+                  <BaseSelect.ItemText className="flex-1">{option.label}</BaseSelect.ItemText>
+                  <BaseSelect.ItemIndicator>
+                    <Check className="text-brand" aria-hidden />
+                  </BaseSelect.ItemIndicator>
+                </BaseSelect.Item>
+              ))}
+            </BaseSelect.List>
+          </ScrollArea>
         </BaseSelect.Popup>
       </BaseSelect.Positioner>
     </BaseSelect.Portal>

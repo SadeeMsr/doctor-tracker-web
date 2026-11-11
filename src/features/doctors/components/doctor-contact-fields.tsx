@@ -1,4 +1,3 @@
-import { AtSign, Phone } from 'lucide-react';
 import type { FieldErrors, UseFormRegister } from 'react-hook-form';
 
 import { Field, fieldErrorId } from '@/components/ui/field';
@@ -19,7 +18,6 @@ export function DoctorContactFields({ register, errors }: DoctorContactFieldsPro
           id="phone"
           type="tel"
           inputMode="tel"
-          icon={<Phone />}
           placeholder="+880 1711 000000"
           autoComplete="off"
           aria-invalid={Boolean(errors.phone)}
@@ -32,7 +30,6 @@ export function DoctorContactFields({ register, errors }: DoctorContactFieldsPro
           id="email"
           type="email"
           inputMode="email"
-          icon={<AtSign />}
           placeholder="doctor@hospital.com"
           autoComplete="off"
           aria-invalid={Boolean(errors.email)}

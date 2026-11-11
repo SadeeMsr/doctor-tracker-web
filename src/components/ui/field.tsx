@@ -23,7 +23,7 @@ export function Field({ htmlFor, label, error, aside, className, children }: Fie
   return (
     <div className={cn('space-y-2', className)}>
       <div className="flex items-baseline justify-between">
-        <label htmlFor={htmlFor} className="text-sm font-medium text-foreground">
+        <label htmlFor={htmlFor} className="text-[0.82rem] font-medium text-foreground">
           {label}
         </label>
         {aside}
@@ -32,7 +32,7 @@ export function Field({ htmlFor, label, error, aside, className, children }: Fie
       <p
         id={fieldErrorId(htmlFor)}
         role={error ? 'alert' : undefined}
-        className={cn('min-h-5 text-[0.8rem] text-danger', !error && 'invisible')}
+        className={cn('min-h-4 pt-0.5 text-xs leading-4 text-danger', !error && 'invisible')}
       >
         {error ?? ' '}
       </p>

@@ -92,7 +92,7 @@ export function DataTable<TData extends RowData>({
 }: DataTableProps<TData>) {
   return (
     <div className={cn('transition-opacity duration-200', isStale && 'opacity-60')}>
-      <div className="hidden overflow-hidden rounded-3xl bg-surface ring-1 ring-border md:block">
+      <div className="hidden overflow-x-auto overscroll-x-contain rounded-3xl bg-surface ring-1 ring-border md:block">
         <DesktopTable {...table} />
       </div>
       <ul className="grid gap-3 md:hidden">

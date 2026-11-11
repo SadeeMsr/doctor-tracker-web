@@ -1,6 +1,7 @@
 import { Controller } from 'react-hook-form';
 
 import { Field, fieldErrorId } from '@/components/ui/field';
+import { Fieldset } from '@/components/ui/fieldset';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,7 +13,7 @@ import type { PatientFieldProps } from './patient-field-props';
 
 export function PatientClinicalFields({ control, register, errors }: PatientFieldProps) {
   return (
-    <>
+    <Fieldset legend="Clinical">
       <Field htmlFor="condition" label="Condition" error={errors.condition?.message}>
         <Controller
           control={control}
@@ -55,6 +56,6 @@ export function PatientClinicalFields({ control, register, errors }: PatientFiel
           {...register('diagnosis')}
         />
       </Field>
-    </>
+    </Fieldset>
   );
 }

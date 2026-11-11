@@ -1,6 +1,7 @@
 'use client';
 
 import { FormActions } from '@/components/feedback/form-actions';
+import { DialogBody } from '@/components/ui/dialog';
 
 import { usePatientForm } from '../hooks/use-patient-form';
 import type { Patient } from '../types';
@@ -25,14 +26,17 @@ export function PatientForm({ patient, doctorId, onDone }: PatientFormProps) {
       onSubmit={onSubmit}
       noValidate
       aria-busy={isPending}
-      className="grid gap-x-4 sm:grid-cols-2"
+      className="flex min-h-0 flex-1 flex-col"
     >
-      <PatientPersonalFields {...fields} />
-      <PatientClinicalFields {...fields} />
-      {/* Reassigning is an edit; a new patient already belongs to the doctor being viewed. */}
-      {patient && <PatientDoctorField control={form.control} error={errors.doctorId?.message} />}
+      <DialogBody>
+        <PatientPersonalFields {...fields} />
+        <PatientClinicalFields {...fields} />
+        {/* Hidden only when adding from a doctor's page: the patient joins that doctor. */}
+        {(patient || !doctorId) && (
+          <PatientDoctorField control={form.control} error={errors.doctorId?.message} />
+        )}
+      </DialogBody>
       <FormActions
-        className="sm:col-span-2"
         error={errors.root?.message}
         isPending={isPending}
         submitLabel={patient ? 'Save changes' : 'Add patient'}

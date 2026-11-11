@@ -3,18 +3,18 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ─── Design tokens ──────────────────────────────────────────
-   Palette: Hunter Green (brand), Soft Beige (canvas), Polar Snow
+   Palette: Hunter Green (brand), Sage Mist (canvas), Polar Snow
    (surfaces), Lime (accent: fills only, never text on light).
    Components read semantic names only, never raw colours. */
 :root {
-  --canvas: #e7dbc5; /* Soft Beige: the app background */
-  --canvas-soft: #f1ebde; /* inputs and wells on the canvas */
+  --canvas: #e3eae6; /* Sage Mist: the app background, a cool tint of the brand green */
+  --canvas-soft: #eef3f0; /* inputs and wells on the canvas */
   --surface: #fdfefd; /* Polar Snow: cards, panels */
   --surface-foreground: #0e2420;
 
   --foreground: #0e2420; /* near-black green: body text */
   --muted-foreground: #5c6d68;
-  --subtle: #ede5d6; /* hover / zebra on surfaces */
+  --subtle: #e8eeea; /* hover / zebra on surfaces */
   --border: color-mix(in oklab, #023933 12%, transparent);
   --ring: #023933;
 
@@ -42,6 +42,21 @@
   --chart-3: #4f8a7b;
   --chart-4: #d9a441;
   --chart-5: #b5a58a;
+
+  /* Sequential scale for ranked data: hunter green → lime, the largest value darkest.
+     Steps 1–4 take light text, 5–8 dark text. */
+  --scale-1: #023933;
+  --scale-2: #0e5045;
+  --scale-3: #1f6a59;
+  --scale-4: #36846c;
+  --scale-5: #5ea283;
+  --scale-6: #8cc08b;
+  --scale-7: #b0db7d;
+  --scale-8: #c8f169;
+
+  /* Focus halo around form controls: lime glow outside the hunter-green ring. */
+  --focus-glow: color-mix(in oklab, var(--accent) 55%, transparent);
+  --danger-glow: color-mix(in oklab, var(--danger) 14%, transparent);
 
   --radius: 1rem;
 }
@@ -74,6 +89,17 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-scale-1: var(--scale-1);
+  --color-scale-2: var(--scale-2);
+  --color-scale-3: var(--scale-3);
+  --color-scale-4: var(--scale-4);
+  --color-scale-5: var(--scale-5);
+  --color-scale-6: var(--scale-6);
+  --color-scale-7: var(--scale-7);
+  --color-scale-8: var(--scale-8);
+
+  --shadow-focus: 0 0 0 4px var(--focus-glow);
+  --shadow-focus-danger: 0 0 0 4px var(--danger-glow);
 
   --radius-sm: calc(var(--radius) - 8px);
   --radius-md: calc(var(--radius) - 4px);

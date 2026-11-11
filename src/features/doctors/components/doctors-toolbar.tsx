@@ -23,7 +23,7 @@ export function DoctorsToolbar({ state }: { state: DoctorFilterState }) {
         label="Search by name or email"
         value={filters.q}
         onChange={setSearch}
-        className="bg-surface ring-border xl:w-80"
+        className="xl:w-80"
       />
       <div className="flex flex-wrap items-center gap-2">
         <FacetFilter

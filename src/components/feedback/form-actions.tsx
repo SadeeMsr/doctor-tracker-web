@@ -1,8 +1,8 @@
 import { CircleAlert } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { DialogFooter } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
-import { cn } from '@/lib/cn';
 
 interface FormActionsProps {
   /** Form-level error (not tied to a field); shown above the buttons. */
@@ -10,22 +10,16 @@ interface FormActionsProps {
   isPending: boolean;
   submitLabel: string;
   onCancel: () => void;
-  className?: string;
 }
 
 /**
- * Foot of a dialog form: the form-level error, then Cancel and a submit that can't double-fire.
+ * Footer of a dialog form: the form-level error, then Cancel and a submit that can't
+ * double-fire. Render it inside the `<form>`, after `DialogBody`.
  * @example <FormActions error={errors.root?.message} isPending={isPending} submitLabel="Save" onCancel={close} />
  */
-export function FormActions({
-  error,
-  isPending,
-  submitLabel,
-  onCancel,
-  className,
-}: FormActionsProps) {
+export function FormActions({ error, isPending, submitLabel, onCancel }: FormActionsProps) {
   return (
-    <div className={cn('space-y-4 pt-2', className)}>
+    <DialogFooter>
       {error && (
         <p
           role="alert"
@@ -36,14 +30,14 @@ export function FormActions({
         </p>
       )}
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <Button variant="secondary" onClick={onCancel} disabled={isPending}>
+        <Button variant="ghost" onClick={onCancel} disabled={isPending}>
           Cancel
         </Button>
-        <Button type="submit" disabled={isPending}>
+        <Button type="submit" disabled={isPending} className="sm:min-w-36">
           {isPending && <Spinner label="Saving" />}
           {submitLabel}
         </Button>
       </div>
-    </div>
+    </DialogFooter>
   );
 }

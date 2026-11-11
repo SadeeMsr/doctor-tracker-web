@@ -1,5 +1,6 @@
 'use client';
 
+import { TriangleAlert } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -33,10 +34,20 @@ export function ConfirmDialog({
   blocker,
 }: ConfirmDialogProps) {
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange} title={title} description={description}>
+    <AlertDialog
+      open={open}
+      onOpenChange={onOpenChange}
+      title={title}
+      description={description}
+      media={
+        <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-danger/10 text-danger">
+          <TriangleAlert className="size-5" aria-hidden />
+        </span>
+      }
+    >
       {blocker}
-      <div className="mt-5 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <Button variant="secondary" onClick={() => onOpenChange(false)} disabled={isPending}>
+      <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
+        <Button variant="ghost" onClick={() => onOpenChange(false)} disabled={isPending}>
           {blocker ? 'Close' : 'Cancel'}
         </Button>
         {!blocker && (

@@ -1,7 +1,6 @@
 'use client';
 
-import { Ellipsis, Pencil, Trash2, Users } from 'lucide-react';
-import Link from 'next/link';
+import { Ellipsis, Pencil, Trash2 } from 'lucide-react';
 
 import { buttonStyles } from '@/components/ui/button';
 import { Menu, MenuContent, MenuItem, MenuSeparator, MenuTrigger } from '@/components/ui/menu';
@@ -14,7 +13,7 @@ interface DoctorRowActionsProps {
   onDelete: (doctor: Doctor) => void;
 }
 
-/** The "more" menu on a doctor row or card. */
+/** Edit and delete for a doctor row or card. Opening the doctor is a visible link instead. */
 export function DoctorRowActions({ doctor, onEdit, onDelete }: DoctorRowActionsProps) {
   return (
     <Menu>
@@ -25,10 +24,6 @@ export function DoctorRowActions({ doctor, onEdit, onDelete }: DoctorRowActionsP
         <Ellipsis aria-hidden />
       </MenuTrigger>
       <MenuContent>
-        <MenuItem render={<Link href={`/doctors/${doctor.id}`} />}>
-          <Users aria-hidden />
-          View patients
-        </MenuItem>
         <MenuItem onClick={() => onEdit(doctor)}>
           <Pencil aria-hidden />
           Edit details
