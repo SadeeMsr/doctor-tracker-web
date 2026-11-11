@@ -41,8 +41,6 @@ const dotStyles = tv({
   defaultVariants: { tone: 'neutral' },
 });
 
-export type BadgeTone = NonNullable<VariantProps<typeof badgeStyles>['tone']>;
-
 type BadgeProps = ComponentProps<'span'> & VariantProps<typeof badgeStyles> & { hasDot?: boolean };
 
 export function Badge({ className, tone, hasDot, children, ...props }: BadgeProps) {

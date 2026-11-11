@@ -1,6 +1,6 @@
 import { isApiError } from './api-client';
 
-export const FALLBACK_ERROR_MESSAGE = 'Something went wrong. Please try again.';
+const FALLBACK_ERROR_MESSAGE = 'Something went wrong. Please try again.';
 
 /**
  * User-facing copy for error codes whose API message isn't meant for end users, or that come
