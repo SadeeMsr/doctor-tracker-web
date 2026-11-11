@@ -1,4 +1,4 @@
-import { Building2, Users } from 'lucide-react';
+import { Building2 } from 'lucide-react';
 import type { ReactNode } from 'react';
 
 import { Badge } from '@/components/ui/badge';
@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/card';
 import type { Doctor } from '../types';
 
 import { DoctorIdentity } from './doctor-identity';
+import { DoctorPatientsLink } from './doctor-patients-link';
 
 /** A doctor as a stacked card: the phone layout of a table row. */
 export function DoctorCard({ doctor, actions }: { doctor: Doctor; actions: ReactNode }) {
@@ -22,11 +23,8 @@ export function DoctorCard({ doctor, actions }: { doctor: Doctor; actions: React
           <Building2 className="size-3.5" aria-hidden />
           {doctor.hospital}
         </span>
-        <span className="inline-flex items-center gap-1.5">
-          <Users className="size-3.5" aria-hidden />
-          {doctor.patientCount} {doctor.patientCount === 1 ? 'patient' : 'patients'}
-        </span>
       </div>
+      <DoctorPatientsLink doctor={doctor} className="w-full justify-between" />
     </Card>
   );
 }

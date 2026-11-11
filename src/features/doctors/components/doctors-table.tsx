@@ -8,6 +8,7 @@ import type { Doctor } from '../types';
 
 import { DoctorCard } from './doctor-card';
 import { DoctorIdentity } from './doctor-identity';
+import { DoctorPatientsLink } from './doctor-patients-link';
 import { DoctorRowActions } from './doctor-row-actions';
 
 interface DoctorsTableProps {
@@ -38,19 +39,18 @@ export function DoctorsTable({ doctors, isStale, onEdit, onDelete }: DoctorsTabl
     {
       id: 'phone',
       header: 'Phone',
-      className: 'whitespace-nowrap max-xl:hidden',
+      className: 'whitespace-nowrap max-2xl:hidden',
       cell: (doctor) => <span className="tabular-nums">{doctor.phone}</span>,
     },
     {
       id: 'patients',
       header: 'Patients',
-      className: 'text-right',
-      cell: (doctor) => <span className="font-semibold tabular-nums">{doctor.patientCount}</span>,
+      cell: (doctor) => <DoctorPatientsLink doctor={doctor} />,
     },
     {
       id: 'added',
       header: 'Added',
-      className: 'whitespace-nowrap text-muted-foreground',
+      className: 'whitespace-nowrap text-muted-foreground max-2xl:hidden',
       cell: (doctor) => formatDate(doctor.createdAt),
     },
     { id: 'actions', header: '', className: 'w-0 pl-0', cell: actions },
