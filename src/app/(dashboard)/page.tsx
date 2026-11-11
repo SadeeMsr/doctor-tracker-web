@@ -1,12 +1,16 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
+
+import { DashboardSkeleton } from '@/features/dashboard/components/dashboard-skeleton';
+import { DashboardView } from '@/features/dashboard/components/dashboard-view';
 
 export const metadata: Metadata = { title: 'Dashboard' };
 
 export default function DashboardPage() {
   return (
-    <section className="space-y-1">
-      <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-      <p className="text-sm text-muted-foreground">Overview of doctors, patients and trends.</p>
-    </section>
+    // URL state (the chart interval) is read on the client, so the shell can prerender.
+    <Suspense fallback={<DashboardSkeleton />}>
+      <DashboardView />
+    </Suspense>
   );
 }

@@ -1,0 +1,31 @@
+import type { SPECIALIZATIONS } from './constants';
+
+export type Specialization = (typeof SPECIALIZATIONS)[number];
+
+/** Mirrors the API's `presentDoctor` exactly. */
+export interface Doctor {
+  id: string;
+  name: string;
+  specialization: Specialization;
+  hospital: string;
+  phone: string;
+  email: string;
+  patientCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+/** Query string of `GET /doctors` (the API's `listDoctorsQuery`). */
+export type DoctorListParams = {
+  page: number;
+  limit: number;
+  search?: string;
+  specialization?: Specialization;
+  hospital?: string;
+  from?: string;
+  to?: string;
+  sortBy: 'createdAt' | 'name';
+  sortOrder: 'asc' | 'desc';
+};
+
+export type DoctorInput = Pick<Doctor, 'name' | 'specialization' | 'hospital' | 'phone' | 'email'>;
