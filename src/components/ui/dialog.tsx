@@ -70,7 +70,10 @@ export function Dialog({ open, onOpenChange, title, description, size, children 
         <BaseDialog.Backdrop className={backdropClass} />
         <BaseDialog.Popup className={popupStyles({ size })}>
           <DialogHeader title={title} description={description} />
-          <div className="overflow-y-auto overscroll-contain px-6 pb-6">{children}</div>
+          {/* Inset on the right and bottom so the scrollbar clears the rounded corners. */}
+          <div className="mr-1.5 mb-4 scrollbar-subtle overflow-y-auto overscroll-contain pr-4.5 pl-6">
+            {children}
+          </div>
         </BaseDialog.Popup>
       </BaseDialog.Portal>
     </BaseDialog.Root>

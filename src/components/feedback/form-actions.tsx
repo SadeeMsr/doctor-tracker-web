@@ -13,8 +13,16 @@ interface FormActionsProps {
   className?: string;
 }
 
+/** Sticks to the bottom of the dialog's scroll area; fields fade out as they scroll under it. */
+const stickyFooter = [
+  'sticky bottom-0 z-10 bg-surface pt-4 pb-2',
+  'before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-6',
+  'before:bg-linear-to-t before:from-surface before:to-transparent',
+];
+
 /**
  * Foot of a dialog form: the form-level error, then Cancel and a submit that can't double-fire.
+ * Stays visible while a long form scrolls.
  * @example <FormActions error={errors.root?.message} isPending={isPending} submitLabel="Save" onCancel={close} />
  */
 export function FormActions({
@@ -25,7 +33,7 @@ export function FormActions({
   className,
 }: FormActionsProps) {
   return (
-    <div className={cn('space-y-4 pt-2', className)}>
+    <div className={cn('space-y-4', stickyFooter, className)}>
       {error && (
         <p
           role="alert"

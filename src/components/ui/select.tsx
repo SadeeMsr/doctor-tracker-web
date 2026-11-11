@@ -38,7 +38,7 @@ function SelectPopup<TValue extends string>({ options }: Pick<SelectProps<TValue
     <BaseSelect.Portal>
       <BaseSelect.Positioner sideOffset={6} alignItemWithTrigger={false} className="z-[60]">
         <BaseSelect.Popup className={cn(popupSurface, 'min-w-(--anchor-width)')}>
-          <BaseSelect.List className="max-h-64 overflow-y-auto">
+          <BaseSelect.List className="max-h-64 scrollbar-subtle overflow-y-auto">
             {options.map((option) => (
               <BaseSelect.Item key={option.value} value={option.value} className={popupItem}>
                 <BaseSelect.ItemText className="flex-1">{option.label}</BaseSelect.ItemText>

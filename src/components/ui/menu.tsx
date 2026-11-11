@@ -28,7 +28,11 @@ export function MenuContent({ align = 'end', side, className, children }: MenuCo
     <BaseMenu.Portal>
       <BaseMenu.Positioner sideOffset={8} align={align} side={side} className="z-[60]">
         <BaseMenu.Popup
-          className={cn(popupSurface, 'max-h-80 min-w-44 overflow-y-auto', className)}
+          className={cn(
+            popupSurface,
+            'max-h-80 min-w-44 scrollbar-subtle overflow-y-auto',
+            className,
+          )}
         >
           {children}
         </BaseMenu.Popup>

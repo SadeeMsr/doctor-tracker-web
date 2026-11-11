@@ -3,18 +3,18 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ─── Design tokens ──────────────────────────────────────────
-   Palette: Hunter Green (brand), Soft Beige (canvas), Polar Snow
+   Palette: Hunter Green (brand), Sage Mist (canvas), Polar Snow
    (surfaces), Lime (accent: fills only, never text on light).
    Components read semantic names only, never raw colours. */
 :root {
-  --canvas: #e7dbc5; /* Soft Beige: the app background */
-  --canvas-soft: #f1ebde; /* inputs and wells on the canvas */
+  --canvas: #e3eae6; /* Sage Mist: the app background, a cool tint of the brand green */
+  --canvas-soft: #eef3f0; /* inputs and wells on the canvas */
   --surface: #fdfefd; /* Polar Snow: cards, panels */
   --surface-foreground: #0e2420;
 
   --foreground: #0e2420; /* near-black green: body text */
   --muted-foreground: #5c6d68;
-  --subtle: #ede5d6; /* hover / zebra on surfaces */
+  --subtle: #e8eeea; /* hover / zebra on surfaces */
   --border: color-mix(in oklab, #023933 12%, transparent);
   --ring: #023933;
 
@@ -166,6 +166,14 @@
     80px 80px,
     16px 16px,
     16px 16px;
+}
+
+@utility scrollbar-subtle {
+  /* Thin brand-tinted thumb, no track or arrow buttons; the gutter is kept so content
+     doesn't shift when a scrollbar appears. */
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--brand) 22%, transparent) transparent;
+  scrollbar-gutter: stable;
 }
 
 @layer base {
