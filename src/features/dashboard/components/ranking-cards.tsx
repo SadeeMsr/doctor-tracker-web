@@ -1,21 +1,26 @@
-import Link from 'next/link';
+'use client';
 
-import { BarList } from '@/components/charts/bar-list';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import { ChartCard } from '@/components/charts/chart-card';
 
 import type { DashboardSummary } from '../types';
+
+import { LazyRankedColumnChart, LazyTreemapChart } from './lazy-charts';
+import { toSpecializationTiles } from './specialization-tiles';
 
 interface RankingCardProps {
   summary: DashboardSummary;
   className?: string;
 }
 
-/** Patients per doctor: the busiest caseloads, each linked to the doctor. */
+/** Patients per doctor: the busiest caseloads; a column opens that doctor. */
 export function CaseloadCard({ summary, className }: RankingCardProps) {
+  const router = useRouter();
   const items = summary.topDoctors.map(({ doctor, patients }) => ({
     id: doctor.id,
     label: doctor.name,
-    hint: doctor.specialization,
     value: patients,
   }));
 
@@ -23,39 +28,52 @@ export function CaseloadCard({ summary, className }: RankingCardProps) {
     <ChartCard
       className={className}
       title="Patients per doctor"
-      description={`The ${String(items.length)} largest caseloads`}
+      description={`Top ${String(items.length)} caseloads · select a column to open`}
     >
-      <BarList
-        items={items}
-        renderLabel={(item) => (
-          <Link href={`/doctors/${item.id}`} className="underline-offset-4 hover:underline">
-            {item.label}
-          </Link>
-        )}
-      />
+      <div className="h-80">
+        <LazyRankedColumnChart
+          items={items}
+          unit="patients"
+          onSelect={(id) => router.push(`/doctors/${id}`)}
+        />
+      </div>
+      {/* The same data as links, for screen readers and keyboard users. */}
+      <ul className="sr-only">
+        {summary.topDoctors.map(({ doctor, patients }) => (
+          <li key={doctor.id}>
+            <Link href={`/doctors/${doctor.id}`}>
+              {doctor.name}, {doctor.specialization}: {patients} patients
+            </Link>
+          </li>
+        ))}
+      </ul>
     </ChartCard>
   );
 }
 
-/** Where the patients are, by medical specialization. */
+/** Where the patients are, by specialization; a tile opens the doctors in it. */
 export function SpecializationsCard({ summary, className }: RankingCardProps) {
-  const items = [...summary.specializations]
-    .sort((a, b) => b.patients - a.patients)
-    .slice(0, 8)
-    .map(({ specialization, doctors, patients }) => ({
-      id: specialization,
-      label: specialization,
-      hint: `${String(doctors)} ${doctors === 1 ? 'doctor' : 'doctors'}`,
-      value: patients,
-    }));
+  const router = useRouter();
+  const tiles = toSpecializationTiles(summary.specializations);
+  const openSpecialization = (specialization: string) =>
+    router.push(`/doctors?specialization=${encodeURIComponent(specialization)}`);
 
   return (
     <ChartCard
       className={className}
       title="Patients by specialization"
-      description="Demand across the top departments"
+      description="Tile size is each department’s share of patients"
     >
-      <BarList items={items} />
+      <div className="h-80">
+        <LazyTreemapChart items={tiles} unit="patients" onSelect={openSpecialization} />
+      </div>
+      <ul className="sr-only">
+        {tiles.map((tile) => (
+          <li key={tile.label}>
+            {tile.label}: {tile.value} patients{tile.hint && `, ${tile.hint}`}
+          </li>
+        ))}
+      </ul>
     </ChartCard>
   );
 }

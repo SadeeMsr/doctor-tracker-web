@@ -27,8 +27,8 @@ export function DashboardGrid({ summary, onIntervalChange, isStale }: DashboardG
         className="xl:col-span-8"
       />
       <ConditionsCard summary={summary} className="xl:col-span-4" />
-      <CaseloadCard summary={summary} className="xl:col-span-7" />
-      <SpecializationsCard summary={summary} className="xl:col-span-5" />
+      <CaseloadCard summary={summary} className="xl:col-span-5" />
+      <SpecializationsCard summary={summary} className="xl:col-span-7" />
     </div>
   );
 }

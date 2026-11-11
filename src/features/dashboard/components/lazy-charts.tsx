@@ -16,3 +16,14 @@ export const LazyDonutChart = dynamic(
   () => import('@/components/charts/donut-chart').then((module) => module.DonutChart),
   { ssr: false, loading },
 );
+
+export const LazyRankedColumnChart = dynamic(
+  () =>
+    import('@/components/charts/ranked-column-chart').then((module) => module.RankedColumnChart),
+  { ssr: false, loading },
+);
+
+export const LazyTreemapChart = dynamic(
+  () => import('@/components/charts/treemap-chart').then((module) => module.TreemapChart),
+  { ssr: false, loading },
+);

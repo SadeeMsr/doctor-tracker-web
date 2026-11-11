@@ -43,6 +43,17 @@
   --chart-4: #d9a441;
   --chart-5: #b5a58a;
 
+  /* Sequential scale for ranked data: hunter green → lime, the largest value darkest.
+     Steps 1–4 take light text, 5–8 dark text. */
+  --scale-1: #023933;
+  --scale-2: #0e5045;
+  --scale-3: #1f6a59;
+  --scale-4: #36846c;
+  --scale-5: #5ea283;
+  --scale-6: #8cc08b;
+  --scale-7: #b0db7d;
+  --scale-8: #c8f169;
+
   /* Focus halo around form controls: lime glow outside the hunter-green ring. */
   --focus-glow: color-mix(in oklab, var(--accent) 55%, transparent);
   --danger-glow: color-mix(in oklab, var(--danger) 14%, transparent);
@@ -78,6 +89,14 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+  --color-scale-1: var(--scale-1);
+  --color-scale-2: var(--scale-2);
+  --color-scale-3: var(--scale-3);
+  --color-scale-4: var(--scale-4);
+  --color-scale-5: var(--scale-5);
+  --color-scale-6: var(--scale-6);
+  --color-scale-7: var(--scale-7);
+  --color-scale-8: var(--scale-8);
 
   --shadow-focus: 0 0 0 4px var(--focus-glow);
   --shadow-focus-danger: 0 0 0 4px var(--danger-glow);
