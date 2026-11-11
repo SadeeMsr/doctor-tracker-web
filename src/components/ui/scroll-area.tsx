@@ -47,7 +47,7 @@ export function ScrollArea({ className, contentClassName, children }: ScrollArea
         <BaseScrollArea.Content className={contentClassName}>{children}</BaseScrollArea.Content>
       </BaseScrollArea.Viewport>
       <BaseScrollArea.Scrollbar className={scrollbarClass}>
-        <BaseScrollArea.Thumb className="w-full rounded-full bg-brand/25 hover:bg-brand/45" />
+        <BaseScrollArea.Thumb className="w-full rounded-full bg-brand-ink/25 hover:bg-brand-ink/45" />
       </BaseScrollArea.Scrollbar>
     </BaseScrollArea.Root>
   );

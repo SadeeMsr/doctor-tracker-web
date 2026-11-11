@@ -22,6 +22,8 @@
   --brand-strong: #012722;
   --brand-foreground: #fdfefd;
   --brand-muted: #9fb5ae; /* secondary text on brand surfaces */
+  /* The brand colour used as ink on surfaces: icons, ticks, focus rings, dashed borders. */
+  --brand-ink: #023933;
 
   --accent: #c8f169; /* Lime: badges, highlights, active marks */
   --accent-foreground: #023933;
@@ -61,6 +63,62 @@
   --radius: 1rem;
 }
 
+/* ─── Dark theme ─────────────────────────────────────────────
+   Same palette, inverted for low light: a near-black green canvas, raised green-grey
+   surfaces, and lime as the ink colour where light mode uses hunter green. Brand panels
+   (sidebar, heroes, dialog headers) stay deep green so the identity carries over. */
+.dark {
+  color-scheme: dark;
+
+  --canvas: #0a1513;
+  --canvas-soft: #13211e;
+  --surface: #111e1b;
+  --surface-foreground: #e4ede9;
+
+  --foreground: #e4ede9;
+  --muted-foreground: #93a7a0;
+  --subtle: #1a2b27;
+  --border: color-mix(in oklab, #e4ede9 11%, transparent);
+  --ring: #c8f169;
+
+  --brand: #154b41;
+  --brand-strong: #0d342e;
+  --brand-foreground: #f2f7f4;
+  --brand-muted: #9fb5ae;
+  --brand-ink: #c8f169;
+
+  --accent: #c8f169;
+  --accent-foreground: #023933;
+
+  --status-critical: #ec6f57;
+  --status-observation: #e2a93c;
+  --status-stable: #5bb882;
+  --status-recovering: #4fb3c4;
+  --status-discharged: #9aa39f;
+
+  --danger: #e2583f;
+  --danger-foreground: #fdfefd;
+
+  --chart-1: #a9dcc8;
+  --chart-2: #c8f169;
+  --chart-3: #5fa694;
+  --chart-4: #e0b155;
+  --chart-5: #c4b598;
+
+  /* Lifted one step so the largest value still reads against the dark surface. */
+  --scale-1: #1b6455;
+  --scale-2: #267463;
+  --scale-3: #348470;
+  --scale-4: #46947a;
+  --scale-5: #66ab86;
+  --scale-6: #8cc28b;
+  --scale-7: #b0db7d;
+  --scale-8: #c8f169;
+
+  --focus-glow: color-mix(in oklab, var(--accent) 30%, transparent);
+  --danger-glow: color-mix(in oklab, var(--danger) 24%, transparent);
+}
+
 @theme inline {
   --color-canvas: var(--canvas);
   --color-canvas-soft: var(--canvas-soft);
@@ -75,6 +133,7 @@
   --color-brand-strong: var(--brand-strong);
   --color-brand-foreground: var(--brand-foreground);
   --color-brand-muted: var(--brand-muted);
+  --color-brand-ink: var(--brand-ink);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-status-critical: var(--status-critical);

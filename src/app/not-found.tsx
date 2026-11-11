@@ -6,7 +6,7 @@ export default function NotFound() {
   return (
     <main className="grid min-h-dvh place-items-center p-4 text-center">
       <div className="space-y-4">
-        <p className="text-sm font-medium text-brand">404</p>
+        <p className="text-sm font-medium text-brand-ink">404</p>
         <h1 className="text-2xl font-semibold tracking-tight">Page not found</h1>
         <Link href="/" className={buttonStyles({ variant: 'secondary' })}>
           Back to dashboard

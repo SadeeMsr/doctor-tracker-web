@@ -19,7 +19,7 @@ const backdropClass = [
 const popupStyles = tv({
   base: [
     'fixed z-50 flex flex-col overflow-hidden bg-surface text-foreground outline-none',
-    'shadow-[0_32px_80px_-24px_rgb(1_39_34/0.45)] ring-1 ring-brand/10',
+    'shadow-[0_32px_80px_-24px_rgb(1_39_34/0.45)] ring-1 ring-brand-ink/10',
     'inset-x-0 bottom-0 max-h-[94dvh] rounded-t-[1.75rem]',
     'sm:inset-x-auto sm:top-1/2 sm:bottom-auto sm:left-1/2 sm:max-h-[min(90dvh,48rem)]',
     'sm:w-[calc(100vw-2rem)] sm:-translate-x-1/2 sm:-translate-y-1/2 sm:rounded-[1.75rem]',

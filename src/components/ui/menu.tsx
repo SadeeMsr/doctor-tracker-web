@@ -52,7 +52,7 @@ export function MenuItem({ className, tone = 'default', ...props }: MenuItemProp
   );
 }
 
-const indicatorClass = 'ml-auto grid size-4 place-items-center text-brand';
+const indicatorClass = 'ml-auto grid size-4 place-items-center text-brand-ink';
 
 /** Stays open on click, so several options can be ticked in one visit. */
 export function MenuCheckboxItem({

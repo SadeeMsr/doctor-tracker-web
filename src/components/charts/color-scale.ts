@@ -16,7 +16,8 @@ export function scaleColor(rank: number, total: number): ScaleColor {
   const step = total <= 1 ? 0 : Math.round((rank * (STEPS - 1)) / (total - 1));
   return {
     fill: `var(--scale-${String(step + 1)})`,
-    ink: step < LIGHT_INK_STEPS ? 'var(--brand-foreground)' : 'var(--foreground)',
+    // The light end of the scale is light in both themes, so it always takes the dark ink.
+    ink: step < LIGHT_INK_STEPS ? 'var(--brand-foreground)' : 'var(--accent-foreground)',
   };
 }
 

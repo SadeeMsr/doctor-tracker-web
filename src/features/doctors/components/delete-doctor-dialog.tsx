@@ -21,7 +21,7 @@ function PatientsBlocker({ doctor, onClose }: { doctor: Doctor; onClose: () => v
       <Link
         href={`/doctors/${doctor.id}`}
         onClick={onClose}
-        className="font-medium text-brand underline underline-offset-4"
+        className="font-medium text-brand-ink underline underline-offset-4"
       >
         View patients
       </Link>

@@ -4,6 +4,7 @@ import { ChevronsUpDown, LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { tv } from 'tailwind-variants';
 
+import { ThemeMenuItems } from '@/components/layout/theme-menu-items';
 import { Avatar } from '@/components/ui/avatar';
 import {
   Menu,
@@ -67,6 +68,8 @@ export function UserMenu({ layout }: UserMenuProps) {
           Signed in as{' '}
           <span className="block truncate font-medium text-foreground">{user.email}</span>
         </MenuHeading>
+        <MenuSeparator />
+        <ThemeMenuItems />
         <MenuSeparator />
         <MenuItem tone="danger" onClick={signOut} disabled={logout.isPending}>
           <LogOut aria-hidden />

@@ -21,7 +21,7 @@ export function StatCard({ label, value, icon, hint, className }: StatCardProps)
     <Card className={cn('flex flex-col justify-between gap-8 p-5', className)}>
       <div className="flex items-center justify-between gap-3">
         <h3 className="text-sm font-medium text-muted-foreground">{label}</h3>
-        <span className="grid size-9 place-items-center rounded-full bg-canvas-soft text-brand [&_svg]:size-4">
+        <span className="grid size-9 place-items-center rounded-full bg-canvas-soft text-brand-ink [&_svg]:size-4">
           {icon}
         </span>
       </div>

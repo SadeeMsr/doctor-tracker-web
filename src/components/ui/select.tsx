@@ -29,8 +29,8 @@ interface SelectProps<TValue extends string> {
 const triggerClass = [
   'flex h-11 w-full items-center justify-between gap-2 rounded-2xl bg-surface px-4 text-left',
   'text-[0.95rem] shadow-xs ring-1 ring-border transition-[box-shadow] duration-200',
-  'hover:ring-brand/30 focus-visible:shadow-focus focus-visible:ring-brand focus-visible:outline-none',
-  'data-popup-open:shadow-focus data-popup-open:ring-brand',
+  'hover:ring-brand-ink/30 focus-visible:shadow-focus focus-visible:ring-brand-ink focus-visible:outline-none',
+  'data-popup-open:shadow-focus data-popup-open:ring-brand-ink',
   'aria-invalid:ring-danger aria-invalid:focus-visible:shadow-focus-danger data-disabled:opacity-60',
 ].join(' ');
 
@@ -48,7 +48,7 @@ function SelectPopup<TValue extends string>({ options }: Pick<SelectProps<TValue
                 <BaseSelect.Item key={option.value} value={option.value} className={popupItem}>
                   <BaseSelect.ItemText className="flex-1">{option.label}</BaseSelect.ItemText>
                   <BaseSelect.ItemIndicator>
-                    <Check className="text-brand" aria-hidden />
+                    <Check className="text-brand-ink" aria-hidden />
                   </BaseSelect.ItemIndicator>
                 </BaseSelect.Item>
               ))}
