@@ -5,6 +5,7 @@ import { useTheme } from 'next-themes';
 
 import { buttonStyles } from '@/components/ui/button';
 import { cn } from '@/lib/cn';
+import { ariaKeyShortcut, SHORTCUTS } from '@/lib/shortcuts';
 
 /**
  * Switches between the light and dark theme; the choice is remembered. Until the user picks,
@@ -19,7 +20,8 @@ export function ThemeToggle({ className }: { className?: string }) {
     <button
       type="button"
       aria-label="Toggle dark mode"
-      title="Toggle dark mode"
+      title="Toggle dark mode (Shift+T)"
+      aria-keyshortcuts={ariaKeyShortcut(SHORTCUTS.toggleTheme)}
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
       className={cn(buttonStyles({ variant: 'secondary', size: 'icon' }), className)}
     >
