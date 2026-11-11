@@ -13,7 +13,6 @@ import { popupSurface } from './surface';
  */
 export const Popover = BasePopover.Root;
 export const PopoverTrigger = BasePopover.Trigger;
-export const PopoverClose = BasePopover.Close;
 
 interface PopoverContentProps {
   align?: 'start' | 'center' | 'end';

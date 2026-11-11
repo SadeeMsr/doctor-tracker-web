@@ -11,7 +11,6 @@ export const cardStyles = tv({
     tone: {
       surface: 'bg-surface text-surface-foreground ring-1 ring-border',
       brand: 'bg-brand text-brand-foreground',
-      accent: 'bg-accent text-accent-foreground',
     },
   },
   defaultVariants: { tone: 'surface' },
