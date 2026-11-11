@@ -1,14 +1,11 @@
 'use client';
 
-import { Plus } from 'lucide-react';
 import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs';
 
-import { PageHeader } from '@/components/feedback/page-header';
-import { Button } from '@/components/ui/button';
 import { useDisclosure } from '@/hooks/use-disclosure';
 import { useShortcut } from '@/hooks/use-shortcut';
 import { ADD_PATIENT_PARAM } from '@/lib/constants';
-import { ariaKeyShortcut, SHORTCUTS } from '@/lib/shortcuts';
+import { SHORTCUTS } from '@/lib/shortcuts';
 
 import { useDoctorFilters } from '../hooks/use-doctor-filters';
 import type { Doctor } from '../types';
@@ -18,7 +15,7 @@ import { DoctorFormDialog } from './doctor-form-dialog';
 import { DoctorsResults } from './doctors-results';
 import { DoctorsToolbar } from './doctors-toolbar';
 
-/** The doctors page: header, filters, results and the dialogs they open. */
+/** The doctors list: filters, results and the dialogs they open. The page renders the header. */
 export function DoctorsView() {
   const state = useDoctorFilters();
   // In the URL, so "Add doctor" can be linked to from anywhere (e.g. the dashboard).
@@ -32,21 +29,6 @@ export function DoctorsView() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        eyebrow="Directory"
-        title="Doctors"
-        description="Everyone on the roster. Open a doctor to see and manage their patients."
-        actions={
-          <Button
-            onClick={openCreate}
-            title="Add doctor (N)"
-            aria-keyshortcuts={ariaKeyShortcut(SHORTCUTS.create)}
-          >
-            <Plus aria-hidden />
-            Add doctor
-          </Button>
-        }
-      />
       <DoctorsToolbar state={state} />
       <DoctorsResults
         state={state}
