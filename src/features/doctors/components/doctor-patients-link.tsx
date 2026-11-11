@@ -36,8 +36,8 @@ export function DoctorPatientsLink({ doctor, onAddPatient, className }: DoctorPa
         <span className="inline-flex items-center gap-2">
           <Plus className="size-4 shrink-0" aria-hidden />
           Add patient
-        </span>
-        <span className="sr-only"> for {doctor.name}</span>
+        </span>{' '}
+        <span className="sr-only">for {doctor.name}</span>
       </button>
     );
   }
@@ -47,8 +47,8 @@ export function DoctorPatientsLink({ doctor, onAddPatient, className }: DoctorPa
       <Users className="size-4 shrink-0" aria-hidden />
       <span className="tabular-nums">
         {String(count)} {count === 1 ? 'patient' : 'patients'}
-      </span>
-      <span className="sr-only"> for {doctor.name}</span>
+      </span>{' '}
+      <span className="sr-only">for {doctor.name}</span>
       <ArrowRight
         className="size-4 shrink-0 transition-transform duration-200 group-hover/link:translate-x-0.5"
         aria-hidden

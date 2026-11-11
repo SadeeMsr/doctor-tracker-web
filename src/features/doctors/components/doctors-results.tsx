@@ -8,6 +8,7 @@ import { TableSkeleton } from '@/components/data-table/table-skeleton';
 import { EmptyState } from '@/components/feedback/empty-state';
 import { ErrorState } from '@/components/feedback/error-state';
 import { Button } from '@/components/ui/button';
+import { usePagingShortcuts } from '@/hooks/use-paging-shortcuts';
 import { getErrorMessage, getErrorReference } from '@/lib/errors';
 
 import type { DoctorFilterState } from '../hooks/use-doctor-filters';
@@ -33,6 +34,7 @@ export function DoctorsResults({
   onDelete,
 }: DoctorsResultsProps) {
   const query = useDoctors(state.params);
+  usePagingShortcuts(query.data?.meta, state.setPage);
 
   if (!query.data) {
     return query.isError ? (

@@ -2,6 +2,7 @@
 
 import { FormActions } from '@/components/feedback/form-actions';
 import { DialogBody } from '@/components/ui/dialog';
+import { useFormShortcuts } from '@/hooks/use-form-shortcuts';
 import { Fieldset } from '@/components/ui/fieldset';
 
 import { useDoctorForm, type DoctorCarry } from '../hooks/use-doctor-form';
@@ -27,6 +28,7 @@ interface DoctorFormProps {
 export function DoctorForm({ addedCount, ...options }: DoctorFormProps) {
   const { doctor, onDone } = options;
   const { form, onSubmit, onSubmitAnother, isPending } = useDoctorForm(options);
+  useFormShortcuts({ onSubmit, onSubmitAnother: doctor ? undefined : onSubmitAnother, isPending });
   const { errors } = form.formState;
 
   return (

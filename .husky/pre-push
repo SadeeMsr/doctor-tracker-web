@@ -1,2 +1,3 @@
-# A production build catches prerender/Suspense errors that typecheck and lint cannot.
+# The full test suite, then a production build, before code leaves the machine.
+pnpm test
 pnpm build

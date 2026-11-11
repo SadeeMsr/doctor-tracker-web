@@ -6,6 +6,8 @@ import { ClearFiltersButton } from '@/components/filters/clear-filters-button';
 import { DateRangeFilter } from '@/components/filters/date-range-filter';
 import { FacetFilter } from '@/components/filters/facet-filter';
 import { SearchInput } from '@/components/filters/search-input';
+import { useShortcut } from '@/hooks/use-shortcut';
+import { SHORTCUTS } from '@/lib/shortcuts';
 
 import { DOCTOR_SORT_OPTIONS, SPECIALIZATION_OPTIONS } from '../constants';
 import type { DoctorFilterState } from '../hooks/use-doctor-filters';
@@ -14,6 +16,7 @@ import { useHospitals } from '../queries';
 /** Search, filters and sort for the doctor list; all of it lives in the URL. */
 export function DoctorsToolbar({ state }: { state: DoctorFilterState }) {
   const { filters, update, setSearch, reset, activeCount } = state;
+  useShortcut(SHORTCUTS.clearFilters, reset, { enabled: activeCount > 0 });
   const hospitals = useHospitals();
   const hospitalOptions = (hospitals.data ?? []).map((name) => ({ value: name, label: name }));
 

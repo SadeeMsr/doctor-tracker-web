@@ -46,6 +46,15 @@ export default defineConfig([
   // Primitives wrap many Base UI parts (Trigger, Content, Item...) in one file.
   { files: ['src/components/ui/**/*.{ts,tsx}'], rules: sizeLimit(250) },
 
+  // Tests read as one long `describe` per behaviour; production code keeps the limits above.
+  {
+    files: ['src/**/*.test.{ts,tsx}', 'src/test/**/*.{ts,tsx}'],
+    rules: {
+      'max-lines-per-function': 'off',
+      'max-lines': ['error', { max: 300, skipBlankLines: true, skipComments: true }],
+    },
+  },
+
   // ─── Reusability tiers ───────────────────────────────────────────
   {
     files: ['src/features/**/*.{ts,tsx}'],

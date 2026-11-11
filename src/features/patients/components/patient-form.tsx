@@ -2,6 +2,7 @@
 
 import { FormActions } from '@/components/feedback/form-actions';
 import { DialogBody } from '@/components/ui/dialog';
+import { useFormShortcuts } from '@/hooks/use-form-shortcuts';
 
 import { usePatientForm, type PatientCarry } from '../hooks/use-patient-form';
 import type { Patient } from '../types';
@@ -28,6 +29,7 @@ function addedSoFar(count: number): string {
 export function PatientForm({ addedCount, ...options }: PatientFormProps) {
   const { patient, doctorId } = options;
   const { form, onSubmit, onSubmitAnother, isPending } = usePatientForm(options);
+  useFormShortcuts({ onSubmit, onSubmitAnother: patient ? undefined : onSubmitAnother, isPending });
   const { errors } = form.formState;
   const fields = { control: form.control, register: form.register, errors };
 

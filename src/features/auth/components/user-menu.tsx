@@ -1,10 +1,11 @@
 'use client';
 
-import { ChevronsUpDown, LogOut } from 'lucide-react';
+import { ChevronsUpDown, Keyboard, LogOut } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { tv } from 'tailwind-variants';
 
 import { Avatar } from '@/components/ui/avatar';
+import { KeyCombo } from '@/components/ui/kbd';
 import {
   Menu,
   MenuContent,
@@ -14,6 +15,8 @@ import {
   MenuTrigger,
 } from '@/components/ui/menu';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useShortcutSettings } from '@/hooks/use-shortcut-settings';
+import { SHORTCUTS } from '@/lib/shortcuts';
 
 import { useLogout, useMe } from '../queries';
 
@@ -37,6 +40,7 @@ export function UserMenu({ layout }: UserMenuProps) {
   const router = useRouter();
   const { data: user } = useMe();
   const logout = useLogout();
+  const { setHelpOpen } = useShortcutSettings();
 
   if (!user) return <Skeleton className="size-11 rounded-full opacity-40" />;
 
@@ -68,6 +72,11 @@ export function UserMenu({ layout }: UserMenuProps) {
           <span className="block truncate font-medium text-foreground">{user.email}</span>
         </MenuHeading>
         <MenuSeparator />
+        <MenuItem onClick={() => setHelpOpen(true)} className="max-lg:hidden">
+          <Keyboard aria-hidden />
+          Keyboard shortcuts
+          <KeyCombo combo={SHORTCUTS.help} className="ml-auto" />
+        </MenuItem>
         <MenuItem tone="danger" onClick={signOut} disabled={logout.isPending}>
           <LogOut aria-hidden />
           Sign out

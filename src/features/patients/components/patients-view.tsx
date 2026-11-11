@@ -5,6 +5,8 @@ import { parseAsBoolean, useQueryState } from 'nuqs';
 
 import { Button } from '@/components/ui/button';
 import { useDisclosure } from '@/hooks/use-disclosure';
+import { useShortcut } from '@/hooks/use-shortcut';
+import { ariaKeyShortcut, SHORTCUTS } from '@/lib/shortcuts';
 
 import { usePatientFilters } from '../hooks/use-patient-filters';
 import type { Patient } from '../types';
@@ -26,8 +28,13 @@ export function PatientsView({ doctorId }: PatientsViewProps) {
   const [isCreating, setIsCreating] = useQueryState('new', parseAsBoolean.withDefault(false));
   const editing = useDisclosure<Patient>();
   const deleting = useDisclosure<Patient>();
+  useShortcut(SHORTCUTS.create, () => void setIsCreating(true));
   const addButton = (
-    <Button onClick={() => void setIsCreating(true)}>
+    <Button
+      onClick={() => void setIsCreating(true)}
+      title="Add patient (N)"
+      aria-keyshortcuts={ariaKeyShortcut(SHORTCUTS.create)}
+    >
       <Plus aria-hidden />
       Add patient
     </Button>

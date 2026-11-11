@@ -6,7 +6,9 @@ import { parseAsBoolean, parseAsString, useQueryState } from 'nuqs';
 import { PageHeader } from '@/components/feedback/page-header';
 import { Button } from '@/components/ui/button';
 import { useDisclosure } from '@/hooks/use-disclosure';
+import { useShortcut } from '@/hooks/use-shortcut';
 import { ADD_PATIENT_PARAM } from '@/lib/constants';
+import { ariaKeyShortcut, SHORTCUTS } from '@/lib/shortcuts';
 
 import { useDoctorFilters } from '../hooks/use-doctor-filters';
 import type { Doctor } from '../types';
@@ -24,6 +26,7 @@ export function DoctorsView() {
   const editing = useDisclosure<Doctor>();
   const deleting = useDisclosure<Doctor>();
   const openCreate = () => void setIsCreating(true);
+  useShortcut(SHORTCUTS.create, openCreate);
   // The patients feature, mounted next to this view by the page, opens its form from the URL.
   const [, setAddPatientFor] = useQueryState(ADD_PATIENT_PARAM, parseAsString);
 
@@ -34,7 +37,11 @@ export function DoctorsView() {
         title="Doctors"
         description="Everyone on the roster. Open a doctor to see and manage their patients."
         actions={
-          <Button onClick={openCreate}>
+          <Button
+            onClick={openCreate}
+            title="Add doctor (N)"
+            aria-keyshortcuts={ariaKeyShortcut(SHORTCUTS.create)}
+          >
             <Plus aria-hidden />
             Add doctor
           </Button>
