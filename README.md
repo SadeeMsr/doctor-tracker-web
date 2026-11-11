@@ -7,8 +7,10 @@ how admissions are trending, and which doctors and specialties carry the most pa
 repository is the **Next.js frontend**. The REST API lives in a separate repository,
 [doctor-tracker-api](https://github.com/SadeeMsr/doctor-tracker-api).
 
-> **Live demo:** deployment is in progress; the URL and demo credentials are added here once
-> the app is live.
+> **Live demo:** <https://doctortracker-portal.vercel.app>
+> Sign in as `admin@doctortracker.dev`; the password is in the submission email.
+> The API runs on Render's free plan and sleeps when idle, so the first request after a quiet
+> spell can take up to a minute.
 
 ## Contents
 
