@@ -43,6 +43,10 @@
   --chart-4: #d9a441;
   --chart-5: #b5a58a;
 
+  /* Focus halo around form controls: lime glow outside the hunter-green ring. */
+  --focus-glow: color-mix(in oklab, var(--accent) 55%, transparent);
+  --danger-glow: color-mix(in oklab, var(--danger) 14%, transparent);
+
   --radius: 1rem;
 }
 
@@ -74,6 +78,9 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
+
+  --shadow-focus: 0 0 0 4px var(--focus-glow);
+  --shadow-focus-danger: 0 0 0 4px var(--danger-glow);
 
   --radius-sm: calc(var(--radius) - 8px);
   --radius-md: calc(var(--radius) - 4px);
@@ -166,14 +173,6 @@
     80px 80px,
     16px 16px,
     16px 16px;
-}
-
-@utility scrollbar-subtle {
-  /* Thin brand-tinted thumb, no track or arrow buttons; the gutter is kept so content
-     doesn't shift when a scrollbar appears. */
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in oklab, var(--brand) 22%, transparent) transparent;
-  scrollbar-gutter: stable;
 }
 
 @layer base {

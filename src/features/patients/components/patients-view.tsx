@@ -1,7 +1,7 @@
 'use client';
 
 import { Plus } from 'lucide-react';
-import type { ReactNode } from 'react';
+import { parseAsBoolean, useQueryState } from 'nuqs';
 
 import { Button } from '@/components/ui/button';
 import { useDisclosure } from '@/hooks/use-disclosure';
@@ -15,20 +15,19 @@ import { PatientsResults } from './patients-results';
 import { PatientsToolbar } from './patients-toolbar';
 
 interface PatientsViewProps {
-  /** Set on a doctor's page: lists only their patients and allows adding one. */
+  /** Set on a doctor's page: lists only their patients, and new patients join this doctor. */
   doctorId?: string;
-  /** Shown when there are no patients at all, when no doctor is in scope. */
-  emptyAction?: ReactNode;
 }
 
 /** A patient list with its filters and dialogs: the patients page, or one doctor's patients. */
-export function PatientsView({ doctorId, emptyAction }: PatientsViewProps) {
+export function PatientsView({ doctorId }: PatientsViewProps) {
   const state = usePatientFilters();
-  const creating = useDisclosure<true>();
+  // In the URL, so a page header (or any other page) can link straight to the add form.
+  const [isCreating, setIsCreating] = useQueryState('new', parseAsBoolean.withDefault(false));
   const editing = useDisclosure<Patient>();
   const deleting = useDisclosure<Patient>();
   const addButton = (
-    <Button onClick={() => creating.show(true)}>
+    <Button onClick={() => void setIsCreating(true)}>
       <Plus aria-hidden />
       Add patient
     </Button>
@@ -49,13 +48,17 @@ export function PatientsView({ doctorId, emptyAction }: PatientsViewProps) {
         emptyDescription={
           doctorId
             ? 'This doctor has no patients yet. Add the first one.'
-            : 'Patients are added from a doctor’s page. Pick a doctor to add the first one.'
+            : 'Add the first patient and choose the doctor caring for them.'
         }
-        emptyAction={doctorId ? addButton : emptyAction}
+        emptyAction={addButton}
         onEdit={editing.show}
         onDelete={deleting.show}
       />
-      <PatientFormDialog open={creating.isOpen} onOpenChange={creating.hide} doctorId={doctorId} />
+      <PatientFormDialog
+        open={isCreating}
+        onOpenChange={(open) => void setIsCreating(open || null)}
+        doctorId={doctorId}
+      />
       <PatientFormDialog
         open={editing.isOpen}
         onOpenChange={editing.hide}

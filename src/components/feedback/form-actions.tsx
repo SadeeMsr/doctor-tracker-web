@@ -1,8 +1,8 @@
 import { CircleAlert } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { DialogFooter } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
-import { cn } from '@/lib/cn';
 
 interface FormActionsProps {
   /** Form-level error (not tied to a field); shown above the buttons. */
@@ -10,30 +10,16 @@ interface FormActionsProps {
   isPending: boolean;
   submitLabel: string;
   onCancel: () => void;
-  className?: string;
 }
 
-/** Sticks to the bottom of the dialog's scroll area; fields fade out as they scroll under it. */
-const stickyFooter = [
-  'sticky bottom-0 z-10 bg-surface pt-4 pb-2',
-  'before:pointer-events-none before:absolute before:inset-x-0 before:bottom-full before:h-6',
-  'before:bg-linear-to-t before:from-surface before:to-transparent',
-];
-
 /**
- * Foot of a dialog form: the form-level error, then Cancel and a submit that can't double-fire.
- * Stays visible while a long form scrolls.
+ * Footer of a dialog form: the form-level error, then Cancel and a submit that can't
+ * double-fire. Render it inside the `<form>`, after `DialogBody`.
  * @example <FormActions error={errors.root?.message} isPending={isPending} submitLabel="Save" onCancel={close} />
  */
-export function FormActions({
-  error,
-  isPending,
-  submitLabel,
-  onCancel,
-  className,
-}: FormActionsProps) {
+export function FormActions({ error, isPending, submitLabel, onCancel }: FormActionsProps) {
   return (
-    <div className={cn('space-y-4', stickyFooter, className)}>
+    <DialogFooter>
       {error && (
         <p
           role="alert"
@@ -44,14 +30,14 @@ export function FormActions({
         </p>
       )}
       <div className="flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
-        <Button variant="secondary" onClick={onCancel} disabled={isPending}>
+        <Button variant="ghost" onClick={onCancel} disabled={isPending}>
           Cancel
         </Button>
-        <Button type="submit" disabled={isPending}>
+        <Button type="submit" disabled={isPending} className="sm:min-w-36">
           {isPending && <Spinner label="Saving" />}
           {submitLabel}
         </Button>
       </div>
-    </div>
+    </DialogFooter>
   );
 }

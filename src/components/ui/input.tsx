@@ -5,11 +5,11 @@ export const inputStyles = tv({
   slots: {
     wrapper: [
       // --input-bg is shared with the input, so autofill can be repainted in the same colour.
-      'group/input relative flex items-center rounded-2xl ring-1 ring-transparent',
-      'bg-(--input-bg) [--input-bg:var(--canvas-soft)] focus-within:[--input-bg:var(--surface)]',
-      'transition-[box-shadow,background-color] duration-200',
-      'focus-within:ring-2 focus-within:ring-brand',
-      'has-[input[aria-invalid=true]]:ring-2 has-[input[aria-invalid=true]]:ring-danger',
+      'group/input relative flex items-center rounded-2xl bg-(--input-bg) [--input-bg:var(--surface)]',
+      'shadow-xs ring-1 ring-border transition-[box-shadow] duration-200 hover:ring-brand/30',
+      'focus-within:shadow-focus focus-within:ring-brand',
+      'has-[input[aria-invalid=true]]:ring-danger',
+      'has-[input[aria-invalid=true]]:focus-within:shadow-focus-danger',
     ],
     icon: [
       'pointer-events-none absolute left-4 text-muted-foreground transition-colors',

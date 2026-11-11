@@ -6,6 +6,7 @@ import type { ComponentProps, ReactNode } from 'react';
 
 import { cn } from '@/lib/cn';
 
+import { ScrollArea } from './scroll-area';
 import { popupItem, popupSurface } from './surface';
 
 /**
@@ -27,14 +28,13 @@ export function MenuContent({ align = 'end', side, className, children }: MenuCo
   return (
     <BaseMenu.Portal>
       <BaseMenu.Positioner sideOffset={8} align={align} side={side} className="z-[60]">
-        <BaseMenu.Popup
-          className={cn(
-            popupSurface,
-            'max-h-80 min-w-44 scrollbar-subtle overflow-y-auto',
-            className,
-          )}
-        >
-          {children}
+        <BaseMenu.Popup className={cn(popupSurface, 'flex min-w-44 flex-col p-0', className)}>
+          <ScrollArea
+            className="max-h-80"
+            contentClassName="p-1.5 group-data-has-overflow-y/scroll-area:pr-3"
+          >
+            {children}
+          </ScrollArea>
         </BaseMenu.Popup>
       </BaseMenu.Positioner>
     </BaseMenu.Portal>

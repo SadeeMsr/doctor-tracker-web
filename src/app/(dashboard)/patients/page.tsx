@@ -1,3 +1,4 @@
+import { Plus } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Suspense } from 'react';
@@ -16,16 +17,17 @@ export default function PatientsPage() {
         eyebrow="Records"
         title="Patients"
         description="Every patient across all doctors. Search, filter, edit or remove a record."
+        actions={
+          // Opens the add form via `?new=true`, so the page itself stays a Server Component.
+          <Link href={{ pathname: '/patients', query: { new: 'true' } }} className={buttonStyles()}>
+            <Plus aria-hidden />
+            Add patient
+          </Link>
+        }
       />
       {/* Filters live in the URL and are read on the client, so the shell can prerender. */}
       <Suspense fallback={<TableSkeleton label="Loading patients" />}>
-        <PatientsView
-          emptyAction={
-            <Link href="/doctors" className={buttonStyles()}>
-              Go to doctors
-            </Link>
-          }
-        />
+        <PatientsView />
       </Suspense>
     </div>
   );

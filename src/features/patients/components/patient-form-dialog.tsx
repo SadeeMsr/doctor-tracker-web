@@ -1,6 +1,9 @@
 'use client';
 
-import { Dialog } from '@/components/ui/dialog';
+import { UserPlus } from 'lucide-react';
+
+import { Avatar } from '@/components/ui/avatar';
+import { Dialog, DialogIcon } from '@/components/ui/dialog';
 
 import type { Patient } from '../types';
 
@@ -15,6 +18,13 @@ interface PatientFormDialogProps {
   doctorId?: string;
 }
 
+function description(patient?: Patient, doctorId?: string): string {
+  if (patient) return `Update ${patient.name}'s record.`;
+  return doctorId
+    ? 'They join this doctor’s patient list.'
+    : 'Fill in their record and choose their doctor.';
+}
+
 export function PatientFormDialog({
   open,
   onOpenChange,
@@ -26,9 +36,16 @@ export function PatientFormDialog({
       open={open}
       onOpenChange={onOpenChange}
       title={patient ? 'Edit patient' : 'Add a patient'}
-      description={
-        patient ? `Update ${patient.name}'s record.` : 'They join this doctor’s patient list.'
+      media={
+        patient ? (
+          <Avatar name={patient.name} tone="lime" className="size-12 text-base" />
+        ) : (
+          <DialogIcon>
+            <UserPlus aria-hidden />
+          </DialogIcon>
+        )
       }
+      description={description(patient, doctorId)}
     >
       <PatientForm
         key={patient?.id}
